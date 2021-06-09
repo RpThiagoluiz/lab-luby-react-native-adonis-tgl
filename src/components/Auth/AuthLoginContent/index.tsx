@@ -16,10 +16,15 @@ import {
   ViewWrapper,
   TextTitle,
   TextSubTitle,
+  ForgotPassWrapper,
+  ForgotPass,
 } from "./styles";
-import { AuthFooter } from "../../components/AuthFooter";
-import { InputContainer } from "../../components/InputContainer";
-import { colors } from "../../styles/colors";
+import { AuthFooter } from "../AuthFooter";
+import { InputContainer } from "../InputContainer";
+import { colors } from "../../../styles/colors";
+import { InputWrapper } from "../InputWrapper";
+import { InputPassWrapper } from "../InputPassWrapper";
+import { PressableText } from "../PressableText";
 
 interface AuthScreensProps {
   title: string;
@@ -27,7 +32,7 @@ interface AuthScreensProps {
   children: React.ReactNode;
 }
 
-export const AuthScreens = ({
+export const AuthLoginContent = ({
   title,
   navigation,
   children: OnPressActionChildren,
@@ -36,6 +41,10 @@ export const AuthScreens = ({
 
   const handleSingUp = () => {
     navigate(navigation);
+  };
+
+  const handleLogIn = () => {
+    alert(`Quer logar cedo!`);
   };
 
   return (
@@ -54,7 +63,27 @@ export const AuthScreens = ({
                 <TextSubTitle>{title}</TextSubTitle>
               </ViewWrapper>
 
-              <InputContainer />
+              <InputContainer>
+                <InputWrapper text="Email" />
+                <InputPassWrapper />
+
+                <ForgotPassWrapper>
+                  <ForgotPass onPress={() => alert(`ForgotPass`)}>
+                    I forgot my password
+                  </ForgotPass>
+                </ForgotPassWrapper>
+
+                <PressableText
+                  text="Log In"
+                  color={colors.yellow_green}
+                  onPress={handleLogIn}
+                  icon={{
+                    color: colors.yellow_green,
+                    name: "arrow-right",
+                    size: 24,
+                  }}
+                />
+              </InputContainer>
 
               {OnPressActionChildren}
 

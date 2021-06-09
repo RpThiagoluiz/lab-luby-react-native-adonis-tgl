@@ -1,8 +1,8 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/core";
-import { PressableText } from "../components/PressableText";
-import { AuthScreens } from "../components/AuthScreens";
+import { PressableText } from "../components/Auth/PressableText";
+import { AuthSingUpContent } from "../components/Auth/AuthSingUpContent";
 import { colors } from "../styles/colors";
 
 export const SingUp = () => {
@@ -13,7 +13,7 @@ export const SingUp = () => {
   };
 
   return (
-    <AuthScreens title="Registration" navigation="Login">
+    <AuthSingUpContent title="Registration" navigation="Login">
       <PressableText
         text="Back"
         color={colors.gray_700}
@@ -24,7 +24,7 @@ export const SingUp = () => {
           color: colors.gray_700,
         }}
       />
-    </AuthScreens>
+    </AuthSingUpContent>
   );
 };
 

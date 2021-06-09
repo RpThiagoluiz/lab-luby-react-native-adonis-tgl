@@ -36,3 +36,12 @@ export const TextSubTitle = styled.Text`
   font-style: italic;
   color: ${({ theme }) => theme.colors.gray_700};
 `;
+
+export const ForgotPassWrapper = styled.View`
+  align-items: flex-end;
+`;
+
+export const ForgotPass = styled.Text`
+  color: ${({ theme }) => theme.colors.gray_100};
+  padding: 26px;
+`;
