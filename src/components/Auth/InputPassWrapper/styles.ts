@@ -1,8 +1,13 @@
 import styled from "styled-components/native";
 
-export const InputContent = styled.View`
+interface InputContent {
+  validData?: boolean;
+}
+
+export const InputContent = styled.View<InputContent>`
   border-bottom-width: 1px;
-  border-color: ${({ theme }) => theme.colors.shape};
+  border-color: ${({ theme, validData }) =>
+    validData ? theme.colors.yellow_green : theme.colors.shape};
 `;
 
 export const LabelText = styled.Text`

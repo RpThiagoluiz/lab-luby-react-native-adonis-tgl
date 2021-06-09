@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   StyleSheet,
   Text,
@@ -16,16 +16,12 @@ import {
   ViewWrapper,
   TextTitle,
   TextSubTitle,
-  ForgotPassWrapper,
-  ForgotPass,
 } from "./styles";
 import { AuthFooter } from "../AuthFooter";
 import { InputContainer } from "../InputContainer";
 import { colors } from "../../../styles/colors";
 import { InputWrapper } from "../InputWrapper";
-import { InputPassWrapper } from "../InputPassWrapper";
 import { PressableText } from "../PressableText";
-import { useAuth } from "../../../hook/authContext";
 
 interface AuthScreensProps {
   title: string;
@@ -33,63 +29,20 @@ interface AuthScreensProps {
   children: React.ReactNode;
 }
 
-export const AuthLoginContent = ({
+export const AuthForgotMyPassword = ({
   title,
+  navigation,
   children: OnPressActionChildren,
 }: AuthScreensProps) => {
-  const [isFocused, setIsFocused] = useState(false);
-  const [isFilled, setIsFilled] = useState(false);
-  const [enteredData, setEnteredData] = useState({
-    email: "",
-    password: "",
-  });
-
   const { navigate } = useNavigation();
-  const { signIn } = useAuth();
 
-  const handleLogIn = async () => {
-    try {
-      if (!!enteredData) {
-        const { email, password } = enteredData;
-        await signIn({
-          email,
-          password,
-        });
-      } else {
-        throw new Error(`dados invalidos`);
-      }
-    } catch (error) {
-      alert(error.message);
-    }
+  const handleSingUp = () => {
+    navigate(navigation);
   };
 
-  const handleForgotPass = () => {
-    navigate("ForgotPass");
-  };
-
-  const handleInputBlur = () => {
-    setIsFocused(false);
-    setIsFilled(!!enteredData);
-  };
-
-  const handleInputFocus = () => {
-    setIsFocused(true);
-  };
-
-  const handleInputEmailData = (value: string) => {
-    setIsFilled(!!value);
-    setEnteredData((prevState) => ({
-      ...prevState,
-      email: value,
-    }));
-  };
-
-  const handleInputPassData = (value: string) => {
-    setIsFilled(!!value);
-    setEnteredData((prevState) => ({
-      ...prevState,
-      password: value,
-    }));
+  const handleLogIn = () => {
+    //just test
+    navigate("ResetPass");
   };
 
   return (
@@ -109,34 +62,16 @@ export const AuthLoginContent = ({
               </ViewWrapper>
 
               <InputContainer>
-                <InputWrapper
-                  text="Email"
-                  onBlur={handleInputBlur}
-                  onFocus={handleInputFocus}
-                  validData={isFocused || isFilled}
-                  onChangeText={handleInputEmailData}
-                />
-                <InputPassWrapper
-                  onBlur={handleInputBlur}
-                  onFocus={handleInputFocus}
-                  validData={isFocused || isFilled}
-                  onChangeText={handleInputPassData}
-                />
-
-                <ForgotPassWrapper>
-                  <ForgotPass onPress={handleForgotPass}>
-                    I forgot my password
-                  </ForgotPass>
-                </ForgotPassWrapper>
+                <InputWrapper text="Email" />
 
                 <PressableText
-                  text="Log In"
+                  text="Send Link"
                   color={colors.yellow_green}
                   onPress={handleLogIn}
                   icon={{
                     color: colors.yellow_green,
                     name: "arrow-right",
-                    size: 24,
+                    size: 30,
                   }}
                 />
               </InputContainer>
