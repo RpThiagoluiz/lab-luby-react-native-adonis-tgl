@@ -1,20 +1,33 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
+import { api } from "../../../services/api";
 
-import { useAuth } from "../../../hook/authContext";
 import { AppHeader } from "../AppHeader";
 
 export const AppHome = () => {
-  const { signOut, findToken } = useAuth();
+  const [isLoading, setIsLoading] = useState(true);
+  const [userBets, setUserBets] = useState<any>();
 
   useEffect(() => {
-    console.log(findToken);
+    async function getBets() {
+      setIsLoading(true);
+      try {
+        const { data } = await api.get("/bets");
+        console.log(data);
+
+        setIsLoading(false);
+      } catch (error) {
+        alert(error);
+        setIsLoading(false);
+      }
+    }
+    getBets();
   }, []);
 
   return (
     <View style={styles.container}>
       <AppHeader />
-      <Text>LOGADO!</Text>
+      {isLoading ? <Text>Find bets...</Text> : <Text>is Here</Text>}
     </View>
   );
 };
