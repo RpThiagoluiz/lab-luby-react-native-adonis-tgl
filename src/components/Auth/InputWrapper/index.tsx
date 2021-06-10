@@ -8,6 +8,7 @@ interface InputWrapperProps {
   onFocus?: () => void;
   onChangeText?: (value: string) => void;
   validData?: boolean;
+  existsError?: boolean;
 }
 
 export const InputWrapper = ({
@@ -16,9 +17,10 @@ export const InputWrapper = ({
   onFocus,
   onChangeText,
   validData,
+  existsError,
 }: InputWrapperProps) => {
   return (
-    <InputContent validData={validData}>
+    <InputContent validData={validData} existsError={existsError}>
       <LabelText>{text}</LabelText>
       <TextInput
         onBlur={onBlur}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -6,9 +6,14 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   ScrollView,
+  ActivityIndicator,
+  Platform,
+  ToastAndroid,
+  Alert,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useNavigation } from "@react-navigation/native";
+import { api } from "../../../services/api";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import {
   SafeAreaView,
@@ -31,18 +36,102 @@ interface AuthScreensProps {
 
 export const AuthForgotMyPassword = ({
   title,
-  navigation,
   children: OnPressActionChildren,
 }: AuthScreensProps) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const [isFilled, setIsFilled] = useState(false);
+  const [haveError, setHaveError] = useState(false);
+  const [enteredEmail, setEnteredEmail] = useState({
+    email: "",
+    isValid: false,
+  });
+
   const { navigate } = useNavigation();
 
-  const handleSingUp = () => {
-    navigate(navigation);
+  const handleInputFocus = () => {
+    setIsFocused(true);
   };
 
-  const handleLogIn = () => {
-    //just test
-    navigate("ResetPass");
+  const handleInputBlur = () => {
+    setEnteredEmail((prevState) => ({ ...prevState, isValid: false }));
+
+    const regexValidEmail = /^[\w+.]*@\w+.(?:[A-Z]{2,})?.[\w\w]*$/.test(
+      enteredEmail.email
+    );
+    setIsFocused(false);
+    setIsFilled(!!enteredEmail.email);
+
+    try {
+      setHaveError(false);
+      if (!regexValidEmail) {
+        setHaveError(true);
+        throw new Error(
+          "Digite um email valido. Exemplos: meu.email+categoria@gmail.com, juca_malandro@bol.com.br, pedrobala@hotmail.uy, sandro@culinaria.dahora"
+        );
+      }
+      setEnteredEmail((prevState) => ({ ...prevState, isValid: true }));
+    } catch (error) {
+      if (Platform.OS !== "android") {
+        Alert.alert(
+          "Ocorreu um Erro - O email deve ser valido",
+          ` ${error.message}`
+        );
+      } else {
+        ToastAndroid.showWithGravity(
+          error.message,
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER
+        );
+      }
+    }
+  };
+
+  const handleInputEmailData = (value: string) => {
+    setIsFilled(!!value);
+    setEnteredEmail((prevState) => ({ ...prevState, email: value }));
+  };
+
+  const handleLogin = async () => {
+    setIsLoading(true);
+
+    const sendData = async () => {
+      const { email } = enteredEmail;
+      const response = await api.post("/forgetpassword", {
+        email,
+      });
+      return response;
+    };
+
+    try {
+      if (enteredEmail.isValid === true) {
+        await sendData();
+
+        Alert.alert(
+          "Email enviado",
+          "As instrucoes para criar uma nova senha foi enviada para seu email informado."
+        );
+        navigate("ResetPass");
+      } else if (enteredEmail.isValid === false) {
+        throw new Error(`Preencha o campo com dados validos!`);
+      } else {
+        throw new Error();
+      }
+
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+
+      if (Platform.OS !== "android") {
+        Alert.alert("🤨", `Email nao cadastrado`);
+      } else {
+        ToastAndroid.showWithGravity(
+          `Email nao cadastrado`,
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER
+        );
+      }
+    }
   };
 
   return (
@@ -62,18 +151,32 @@ export const AuthForgotMyPassword = ({
               </ViewWrapper>
 
               <InputContainer>
-                <InputWrapper text="Email" />
-
-                <PressableText
-                  text="Send Link"
-                  color={colors.yellow_green}
-                  onPress={handleLogIn}
-                  icon={{
-                    color: colors.yellow_green,
-                    name: "arrow-right",
-                    size: 30,
-                  }}
+                <InputWrapper
+                  text="Email"
+                  onBlur={handleInputBlur}
+                  onFocus={handleInputFocus}
+                  existsError={haveError}
+                  validData={isFocused || isFilled}
+                  onChangeText={handleInputEmailData}
                 />
+
+                {isLoading ? (
+                  <ActivityIndicator
+                    color={colors.yellow_green}
+                    style={{ padding: 40 }}
+                  />
+                ) : (
+                  <PressableText
+                    text="Send Link"
+                    color={colors.yellow_green}
+                    onPress={handleLogin}
+                    icon={{
+                      color: colors.yellow_green,
+                      name: "arrow-right",
+                      size: 30,
+                    }}
+                  />
+                )}
               </InputContainer>
 
               {OnPressActionChildren}

@@ -1,5 +1,5 @@
 import React from "react";
-import { TouchableOpacity, Platform } from "react-native";
+import { TouchableOpacity } from "react-native";
 import Svg, { Circle, Path, Line } from "react-native-svg";
 import { ViewContainer, ViewNothing } from "./styles";
 import { colors } from "../../styles/colors";

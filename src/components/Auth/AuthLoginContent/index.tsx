@@ -33,6 +33,8 @@ interface AuthScreensProps {
   children: React.ReactNode;
 }
 
+//Active indicador no lugar do button
+
 export const AuthLoginContent = ({
   title,
   children: OnPressActionChildren,

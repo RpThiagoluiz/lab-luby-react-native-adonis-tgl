@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   View,
@@ -33,7 +33,16 @@ export const AuthResetMyPassword = ({
   navigation,
   children: OnPressActionChildren,
 }: AuthScreensProps) => {
+  const [isFocused, setIsFocused] = useState(false);
+  const [isFilled, setIsFilled] = useState(false);
+  const [enteredEmail, setEnteredEmail] = useState("");
+
   const { navigate } = useNavigation();
+
+  const handleInputEmailData = (value: string) => {
+    setIsFilled(!!value);
+    setEnteredEmail(value);
+  };
 
   const handleLogIn = () => {
     alert(`Fetch Para Enviar novo Password`);
