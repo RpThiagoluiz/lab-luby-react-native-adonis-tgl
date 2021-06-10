@@ -1,20 +1,12 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-
-import { useAuth } from "../../../hook/authContext";
 import { AppHeader } from "../AppHeader";
 
-export const AppHome = () => {
-  const { signOut, findToken } = useAuth();
-
-  useEffect(() => {
-    console.log(findToken);
-  }, []);
-
+export const AppAccount = () => {
   return (
     <View style={styles.container}>
       <AppHeader />
-      <Text>LOGADO!</Text>
+      <Text>AppAccount!</Text>
     </View>
   );
 };
