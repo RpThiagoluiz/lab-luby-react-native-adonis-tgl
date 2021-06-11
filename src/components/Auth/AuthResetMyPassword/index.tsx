@@ -5,6 +5,7 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   ScrollView,
+  Alert,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useNavigation } from "@react-navigation/native";
@@ -35,17 +36,51 @@ export const AuthResetMyPassword = ({
 }: AuthScreensProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const [isFilled, setIsFilled] = useState(false);
-  const [enteredEmail, setEnteredEmail] = useState("");
+  const [errorText, setErrorText] = useState("");
+  const [enteredPassword, setEnteredPassword] = useState({
+    password: "",
+    isValid: false,
+  });
+  const [haveError, setHaveError] = useState(false);
 
   const { navigate } = useNavigation();
 
-  const handleInputEmailData = (value: string) => {
+  const handleInputFocus = () => {
+    setIsFocused(true);
+  };
+
+  const handleInputBlur = () => {
+    setEnteredPassword((prevState) => ({ ...prevState, isValid: false }));
+
+    setIsFocused(false);
+    setIsFilled(!!enteredPassword);
+
+    try {
+      setErrorText("");
+      setHaveError(false);
+      if (enteredPassword.password.length < 6) {
+        setHaveError(true);
+        throw new Error("Pelo menos 6 caracteres");
+      }
+      setEnteredPassword((prevState) => ({ ...prevState, isValid: true }));
+    } catch (error) {
+      setErrorText(error.message);
+    }
+  };
+
+  const handleInputPassword = (value: string) => {
     setIsFilled(!!value);
-    setEnteredEmail(value);
+    setEnteredPassword((prevState) => ({ ...prevState, password: value }));
   };
 
   const handleLogIn = () => {
-    alert(`Fetch Para Enviar novo Password`);
+    //Access Token - in web route
+    if (enteredPassword.isValid) {
+      Alert.alert("Sorry", `Just WebService... Go to betLogin ╚(•⌂•)╝`);
+      navigate("Login");
+    } else {
+      Alert.alert("😪", `Password invalido!`);
+    }
   };
 
   return (
@@ -65,7 +100,15 @@ export const AuthResetMyPassword = ({
               </ViewWrapper>
 
               <InputContainer>
-                <InputPassWrapper />
+                <InputPassWrapper
+                  onBlur={handleInputBlur}
+                  onFocus={handleInputFocus}
+                  existsError={haveError}
+                  validData={isFocused || isFilled}
+                  inputError={haveError}
+                  inputErrorText={errorText}
+                  onChangeText={handleInputPassword}
+                />
 
                 <PressableText
                   text="Confirm"
@@ -81,7 +124,7 @@ export const AuthResetMyPassword = ({
 
               {OnPressActionChildren}
 
-              <AuthFooter />
+              <AuthFooter stylesMarginTop="240px" />
             </ViewContent>
           </ScrollView>
         </TouchableWithoutFeedback>

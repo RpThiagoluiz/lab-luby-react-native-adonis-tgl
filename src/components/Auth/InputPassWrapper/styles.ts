@@ -2,12 +2,17 @@ import styled from "styled-components/native";
 
 interface InputContent {
   validData?: boolean;
+  existsError?: boolean;
 }
 
 export const InputContent = styled.View<InputContent>`
   border-bottom-width: 1px;
-  border-color: ${({ theme, validData }) =>
-    validData ? theme.colors.yellow_green : theme.colors.shape};
+  border-color: ${({ theme, validData, existsError }) =>
+    existsError
+      ? theme.colors.red
+      : validData
+      ? theme.colors.yellow_green
+      : theme.colors.shape};
 `;
 
 export const LabelText = styled.Text`
@@ -29,4 +34,11 @@ export const PasswordWrapper = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+`;
+
+export const TextError = styled.Text`
+  color: ${({ theme }) => theme.colors.red};
+  font-size: 15px;
+  text-align: center;
+  margin-top: 2px;
 `;

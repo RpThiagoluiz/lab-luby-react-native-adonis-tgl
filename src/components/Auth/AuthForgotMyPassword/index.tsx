@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   StyleSheet,
-  Text,
   View,
   KeyboardAvoidingView,
   Keyboard,
@@ -42,6 +41,7 @@ export const AuthForgotMyPassword = ({
   const [isFocused, setIsFocused] = useState(false);
   const [isFilled, setIsFilled] = useState(false);
   const [haveError, setHaveError] = useState(false);
+  const [errorText, setErrorText] = useState("");
   const [enteredEmail, setEnteredEmail] = useState({
     email: "",
     isValid: false,
@@ -66,24 +66,11 @@ export const AuthForgotMyPassword = ({
       setHaveError(false);
       if (!regexValidEmail) {
         setHaveError(true);
-        throw new Error(
-          "Digite um email valido. Exemplos: meu.email+categoria@gmail.com, juca_malandro@bol.com.br, pedrobala@hotmail.uy, sandro@culinaria.dahora"
-        );
+        throw new Error("Digite um email valido!");
       }
       setEnteredEmail((prevState) => ({ ...prevState, isValid: true }));
     } catch (error) {
-      if (Platform.OS !== "android") {
-        Alert.alert(
-          "Ocorreu um Erro - O email deve ser valido",
-          ` ${error.message}`
-        );
-      } else {
-        ToastAndroid.showWithGravity(
-          error.message,
-          ToastAndroid.SHORT,
-          ToastAndroid.CENTER
-        );
-      }
+      setErrorText(error.message);
     }
   };
 
@@ -92,7 +79,7 @@ export const AuthForgotMyPassword = ({
     setEnteredEmail((prevState) => ({ ...prevState, email: value }));
   };
 
-  const handleLogin = async () => {
+  const handleSendDataEmail = async () => {
     setIsLoading(true);
 
     const sendData = async () => {
@@ -113,10 +100,8 @@ export const AuthForgotMyPassword = ({
         );
         navigate("ResetPass");
       } else if (enteredEmail.isValid === false) {
-        throw new Error(`Preencha o campo com dados validos!`);
-      } else {
-        throw new Error();
-      }
+        setErrorText(`Preencha o campo com dados validos!`);
+      } else return;
 
       setIsLoading(false);
     } catch (error) {
@@ -158,6 +143,8 @@ export const AuthForgotMyPassword = ({
                   existsError={haveError}
                   validData={isFocused || isFilled}
                   onChangeText={handleInputEmailData}
+                  inputError={haveError}
+                  inputErrorText={errorText}
                 />
 
                 {isLoading ? (
@@ -169,7 +156,7 @@ export const AuthForgotMyPassword = ({
                   <PressableText
                     text="Send Link"
                     color={colors.yellow_green}
-                    onPress={handleLogin}
+                    onPress={handleSendDataEmail}
                     icon={{
                       color: colors.yellow_green,
                       name: "arrow-right",
@@ -181,7 +168,7 @@ export const AuthForgotMyPassword = ({
 
               {OnPressActionChildren}
 
-              <AuthFooter />
+              <AuthFooter stylesMarginTop="140px" />
             </ViewContent>
           </ScrollView>
         </TouchableWithoutFeedback>

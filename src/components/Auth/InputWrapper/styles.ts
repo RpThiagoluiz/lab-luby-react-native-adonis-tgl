@@ -27,3 +27,10 @@ export const TextInput = styled.TextInput`
   margin-left: 26px;
   font-size: 20px;
 `;
+
+export const TextError = styled.Text`
+  color: ${({ theme }) => theme.colors.red};
+  font-size: 15px;
+  text-align: center;
+  margin-top: 2px;
+`;

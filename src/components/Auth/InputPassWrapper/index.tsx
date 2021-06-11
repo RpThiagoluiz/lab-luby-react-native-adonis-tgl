@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { View } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import {
   InputContent,
@@ -6,6 +7,7 @@ import {
   PassIconWrapper,
   PasswordWrapper,
   TextInput,
+  TextError,
 } from "./styles";
 import { colors } from "../../../styles/colors";
 
@@ -14,6 +16,9 @@ interface InputPassWrapperProps {
   onFocus?: () => void;
   onChangeText?: (value: string) => void;
   validData?: boolean;
+  existsError?: boolean;
+  inputError?: boolean;
+  inputErrorText?: string;
 }
 
 export const InputPassWrapper = ({
@@ -21,28 +26,34 @@ export const InputPassWrapper = ({
   onFocus,
   onChangeText,
   validData,
+  existsError,
+  inputError,
+  inputErrorText,
 }: InputPassWrapperProps) => {
   const [isVisiblePass, setIsVisiblePass] = useState(true);
 
   return (
-    <InputContent validData={validData}>
-      <PasswordWrapper>
-        <LabelText>Password</LabelText>
-        <PassIconWrapper>
-          <FontAwesome5
-            name={isVisiblePass ? "eye" : "eye-slash"}
-            size={32}
-            color={isVisiblePass ? colors.gray_300 : colors.yellow_green}
-            onPress={() => setIsVisiblePass((prevState) => !prevState)}
-          />
-        </PassIconWrapper>
-      </PasswordWrapper>
-      <TextInput
-        secureTextEntry={isVisiblePass}
-        onBlur={onBlur}
-        onFocus={onFocus}
-        onChangeText={onChangeText}
-      />
-    </InputContent>
+    <View>
+      <InputContent validData={validData} existsError={existsError}>
+        <PasswordWrapper>
+          <LabelText>Password</LabelText>
+          <PassIconWrapper>
+            <FontAwesome5
+              name={isVisiblePass ? "eye" : "eye-slash"}
+              size={32}
+              color={isVisiblePass ? colors.gray_300 : colors.yellow_green}
+              onPress={() => setIsVisiblePass((prevState) => !prevState)}
+            />
+          </PassIconWrapper>
+        </PasswordWrapper>
+        <TextInput
+          secureTextEntry={isVisiblePass}
+          onBlur={onBlur}
+          onFocus={onFocus}
+          onChangeText={onChangeText}
+        />
+      </InputContent>
+      {inputError && <TextError>{inputErrorText}</TextError>}
+    </View>
   );
 };

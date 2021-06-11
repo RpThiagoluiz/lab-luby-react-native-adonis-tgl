@@ -1,9 +1,13 @@
 import styled from "styled-components/native";
 
-export const Container = styled.View`
+interface ContainerProps {
+  marginTop?: string;
+}
+
+export const Container = styled.View<ContainerProps>`
   width: 100%;
   align-items: center;
-  margin-top: 60;
+  margin-top: ${({ marginTop }) => (!!marginTop ? marginTop : "80px")};
 `;
 
 export const Text = styled.Text`

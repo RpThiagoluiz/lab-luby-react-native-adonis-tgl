@@ -1,20 +1,14 @@
 import React from "react";
-import { View, ActivityIndicator } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { useAuth } from "../hook/authContext";
 import { StackRoutes } from "./stack.routes";
 import { StackAppRoutes } from "./stackApp.routes";
+import { LoadingLottery } from "../components/Loading";
 
 export const Routes = () => {
   const { logged, loading } = useAuth();
 
-  if (loading) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size={100} color="#B5C401" />
-      </View>
-    );
-  }
+  if (loading) return <LoadingLottery />;
 
   return (
     <NavigationContainer>
