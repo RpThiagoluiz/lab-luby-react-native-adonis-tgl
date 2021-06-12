@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
+import { useAuth } from "../../../hook/authContext";
 import { api } from "../../../services/api";
 
 import { AppHeader } from "../AppHeader";
@@ -7,6 +8,8 @@ import { AppHeader } from "../AppHeader";
 export const AppHome = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [userBets, setUserBets] = useState<any>();
+
+  const { userEmail } = useAuth();
 
   useEffect(() => {
     async function getBets() {
@@ -22,6 +25,7 @@ export const AppHome = () => {
       }
     }
     getBets();
+    console.log(userEmail);
   }, []);
 
   return (

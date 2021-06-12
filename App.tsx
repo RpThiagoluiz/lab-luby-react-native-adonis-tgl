@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import AppLoading from "expo-app-loading";
 import * as Font from "expo-font";
-import { AuthProvider, useAuth } from "./src/hook/authContext";
+import { AuthProvider } from "./src/hook/authContext";
 import { ThemeProvider } from "styled-components";
 import { Routes } from "./src/routes";
 import { colors } from "./src/styles/colors";
-import { LoadingLottery } from "./src/components/Loading";
 
 export default function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false);

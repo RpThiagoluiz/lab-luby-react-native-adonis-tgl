@@ -6,13 +6,13 @@ import { StackAppRoutes } from "./stackApp.routes";
 import { LoadingLottery } from "../components/Loading";
 
 export const Routes = () => {
-  const { logged, loading } = useAuth();
+  const { signed, loading } = useAuth();
 
   if (loading) return <LoadingLottery />;
 
   return (
     <NavigationContainer>
-      {logged ? <StackAppRoutes /> : <StackRoutes />}
+      {signed ? <StackAppRoutes /> : <StackRoutes />}
     </NavigationContainer>
   );
 };

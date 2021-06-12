@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Auth from "../services/sessionSingIn";
 import { api } from "../services/api";
 
 interface UserData {
@@ -11,10 +12,14 @@ interface TokenData {
   token: string;
 }
 
+interface ResponseApiDataSession {
+  user: object;
+  token: object;
+}
+
 interface AuthContextData {
-  userEmail: string;
-  findToken: TokenData;
-  logged: boolean;
+  userEmail: string | null;
+  signed: boolean;
   loading: boolean;
   signIn: ({ email, password }: UserData) => Promise<void>;
   signOut: () => Promise<void>;
@@ -28,69 +33,93 @@ interface AuthProviderProps {
 const AuthContext = createContext({} as AuthContextData);
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [userEmail, setUserEmail] = useState("");
-  const [logged, setLogged] = useState<boolean>(false);
-  const [findToken, setFindToken] = useState({} as TokenData);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const loadDataWhenUserExist = async () => {
-      const isLogged = await AsyncStorage.getItem("@tgl-labluby-devthiago");
-      setLogged(!!isLogged);
-
-      setLoading(false);
-    };
-    loadDataWhenUserExist();
-  }, []);
-
-  useEffect(() => {
-    const loadDataWhenTokenExist = async () => {
+    const loadAsyncStorageData = async () => {
       const token = await AsyncStorage.getItem("@tgl-labluby-devthiago");
+      const userEmail = await AsyncStorage.getItem(
+        "@tgl-labluby-devthiago-user"
+      );
 
-      if (token) {
-        setFindToken({ token });
-        api.defaults.headers.Authorization = `Bearer ${token}`;
+      //Tempo de loading da informacao
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      if (token && userEmail) {
+        setUserEmail(JSON.parse(userEmail));
+        setLoading(false);
       }
-
       setLoading(false);
     };
 
-    loadDataWhenTokenExist();
+    loadAsyncStorageData();
   }, []);
+
+  // useEffect(() => {
+  //   const loadDataWhenTokenExist = async () => {
+  //     const token = await AsyncStorage.getItem("@tgl-labluby-devthiago");
+
+  //     if (token) {
+  //       setFindToken({ token });
+  //       api.defaults.headers.Authorization = `Bearer ${token}`;
+  //     }
+
+  //     setLoading(false);
+  //   };
+
+  //   loadDataWhenTokenExist();
+  // }, []);
 
   const signIn = async ({ email, password }: UserData) => {
-    setLoading(true);
-    try {
-      const response = await api.post("/sessions", {
-        email,
-        password,
-      });
+    const { data } = await Auth.singIn({ email, password });
 
-      const { token } = response.data.token;
-      const user = response.data.user;
+    //verificar se teve sucesso
 
-      await AsyncStorage.setItem("@tgl-labluby-devthiago", token);
-      await AsyncStorage.setItem("@tgl-labluby-devthiago-user", user);
+    const {
+      token: { token },
+      user,
+    } = data;
 
-      setUserEmail(user.email);
-      setFindToken(token);
-      setLogged(true);
-      setLoading(false);
+    api.defaults.headers.Authorization = `Bearer ${token}`;
+    await AsyncStorage.setItem("@tgl-labluby-devthiago", token);
+    await AsyncStorage.setItem(
+      "@tgl-labluby-devthiago-user",
+      JSON.stringify(user)
+    );
 
-      api.defaults.headers.Authorization = `Bearer ${token}`;
-    } catch (error) {
-      console.log(error.response);
-      setLoading(false);
-    }
+    setUserEmail(user.email);
+
+    // setLoading(true);
+    // try {
+    //   const response = await api.post("/sessions", {
+    //     email,
+    //     password,
+    //   });
+
+    //   const { token } = response.data.token;
+    //   const user = response.data.user;
+
+    //   await AsyncStorage.setItem("@tgl-labluby-devthiago", token);
+    //   await AsyncStorage.setItem("@tgl-labluby-devthiago-user", user);
+
+    //   setUserEmail(user.email);
+    //   setFindToken(token);
+    //   setSigned(true);
+    //   setLoading(false);
+
+    //   api.defaults.headers.Authorization = `Bearer ${token}`;
+    // } catch (error) {
+    //   console.log(error.response);
+    //   setLoading(false);
+    // }
   };
 
   const signOut = async () => {
-    setLoading(true);
     await AsyncStorage.removeItem("@tgl-labluby-devthiago");
     await AsyncStorage.removeItem("@tgl-labluby-devthiago-user");
-    setFindToken({} as TokenData);
-    setLogged(false);
-    setLoading(false);
+
+    setUserEmail(null);
   };
 
   const updateUser = async (userData: any) => {
@@ -112,9 +141,8 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     <AuthContext.Provider
       value={{
         userEmail,
-        findToken,
         loading,
-        logged,
+        signed: !!userEmail,
         signIn,
         signOut,
         updateUser,
