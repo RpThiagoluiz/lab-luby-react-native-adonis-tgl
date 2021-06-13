@@ -103,7 +103,6 @@ export const AuthResetMyPassword = ({
                 <InputPassWrapper
                   onBlur={handleInputBlur}
                   onFocus={handleInputFocus}
-                  existsError={haveError}
                   validData={isFocused || isFilled}
                   inputError={haveError}
                   inputErrorText={errorText}

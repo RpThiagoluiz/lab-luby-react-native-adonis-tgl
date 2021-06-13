@@ -16,7 +16,6 @@ interface InputPassWrapperProps {
   onFocus?: () => void;
   onChangeText?: (value: string) => void;
   validData?: boolean;
-  existsError?: boolean;
   inputError?: boolean;
   inputErrorText?: string;
 }
@@ -26,7 +25,6 @@ export const InputPassWrapper = ({
   onFocus,
   onChangeText,
   validData,
-  existsError,
   inputError,
   inputErrorText,
 }: InputPassWrapperProps) => {
@@ -34,7 +32,7 @@ export const InputPassWrapper = ({
 
   return (
     <View>
-      <InputContent validData={validData} existsError={existsError}>
+      <InputContent validData={validData} existsError={inputError}>
         <PasswordWrapper>
           <LabelText>Password</LabelText>
           <PassIconWrapper>

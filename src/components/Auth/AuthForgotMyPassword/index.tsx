@@ -140,7 +140,6 @@ export const AuthForgotMyPassword = ({
                   text="Email"
                   onBlur={handleInputBlur}
                   onFocus={handleInputFocus}
-                  existsError={haveError}
                   validData={isFocused || isFilled}
                   onChangeText={handleInputEmailData}
                   inputError={haveError}

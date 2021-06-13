@@ -51,7 +51,6 @@ export const AppAccount = () => {
                     onFocus={() => {}}
                     //validData={isFocused.email || isFilled.email}
                     //onChangeText={handleInputEmailData}
-                    //existsError={haveError.email}
                     //inputError={haveError.email}
                     //inputErrorText={errorText.email}
                   />
@@ -62,7 +61,6 @@ export const AppAccount = () => {
                     onFocus={() => {}}
                     //validData={isFocused.email || isFilled.email}
                     //onChangeText={handleInputEmailData}
-                    //existsError={haveError.email}
                     //inputError={haveError.email}
                     //inputErrorText={errorText.email}
                   />
@@ -71,7 +69,6 @@ export const AppAccount = () => {
                     onFocus={() => {}}
                     //validData={isFocused.password || isFilled.password}
                     //onChangeText={handleInputPassData}
-                    //existsError={haveError.password}
                     //inputError={haveError.password}
                     //inputErrorText={errorText.password}
                   />

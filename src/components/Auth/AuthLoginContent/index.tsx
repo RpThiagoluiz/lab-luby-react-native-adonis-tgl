@@ -215,7 +215,6 @@ export const AuthLoginContent = ({
                   onFocus={() => handleInputFocus("email")}
                   validData={isFocused.email || isFilled.email}
                   onChangeText={handleInputEmailData}
-                  existsError={haveError.email}
                   inputError={haveError.email}
                   inputErrorText={errorText.email}
                 />
@@ -224,7 +223,6 @@ export const AuthLoginContent = ({
                   onFocus={() => handleInputFocus("password")}
                   validData={isFocused.password || isFilled.password}
                   onChangeText={handleInputPassData}
-                  existsError={haveError.password}
                   inputError={haveError.password}
                   inputErrorText={errorText.password}
                 />

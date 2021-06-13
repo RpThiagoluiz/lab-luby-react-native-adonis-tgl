@@ -264,7 +264,6 @@ export const AuthSingUpContent = ({
                 <InputWrapper
                   text="Name"
                   onChangeText={handleNameInput}
-                  existsError={haveError.name}
                   validData={isFocused.name || isFilled.name}
                   onBlur={() => handleBlurInput("name")}
                   onFocus={() => handleFocusInput("name")}
@@ -274,7 +273,6 @@ export const AuthSingUpContent = ({
                 <InputWrapper
                   text="Email"
                   onChangeText={handleEmailInput}
-                  existsError={haveError.email}
                   validData={isFocused.email || isFilled.email}
                   onBlur={() => handleBlurInput("email")}
                   onFocus={() => handleFocusInput("email")}
@@ -283,7 +281,6 @@ export const AuthSingUpContent = ({
                 />
                 <InputPassWrapper
                   onChangeText={handlePasswordInput}
-                  existsError={haveError.password}
                   validData={isFocused.password || isFilled.password}
                   onBlur={() => handleBlurInput("password")}
                   onFocus={() => handleFocusInput("password")}
