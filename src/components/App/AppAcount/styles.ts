@@ -5,7 +5,7 @@ export const ViewContainer = styled.View`
 `;
 
 export const ViewWrapper = styled.View`
-  margin-top: 30px;
+  margin-top: 10px;
 `;
 
 export const ViewWrapperData = styled.View`

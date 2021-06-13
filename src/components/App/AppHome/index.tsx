@@ -11,21 +11,21 @@ export const AppHome = () => {
 
   const { user } = useAuth();
 
-  useEffect(() => {
-    async function getBets() {
-      setIsLoading(true);
-      try {
-        const { data } = await api.get("/bets");
+  // useEffect(() => {
+  //   async function getBets() {
+  //     setIsLoading(true);
+  //     try {
+  //       const { data } = await api.get("/bets");
 
-        setIsLoading(false);
-      } catch (error) {
-        alert(error);
-        setIsLoading(false);
-      }
-    }
-    getBets();
-    console.log(user);
-  }, []);
+  //       setIsLoading(false);
+  //     } catch (error) {
+  //       alert(error);
+  //       setIsLoading(false);
+  //     }
+  //   }
+  //   getBets();
+  //   console.log(user);
+  // }, []);
 
   return (
     <View style={styles.container}>

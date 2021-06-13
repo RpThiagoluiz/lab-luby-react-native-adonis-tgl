@@ -7,17 +7,17 @@ import { api } from "../../../services/api";
 export const AppNewGame = () => {
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const getGames = async () => {
-      try {
-        const { data } = await api.get(`/game`);
-        setIsLoading(false);
-      } catch (error) {
-        setIsLoading(false);
-      }
-    };
-    getGames();
-  }, []);
+  // useEffect(() => {
+  //   const getGames = async () => {
+  //     try {
+  //       const { data } = await api.get(`/game`);
+  //       setIsLoading(false);
+  //     } catch (error) {
+  //       setIsLoading(false);
+  //     }
+  //   };
+  //   getGames();
+  // }, []);
   return (
     <View style={styles.container}>
       <AppHeader />
