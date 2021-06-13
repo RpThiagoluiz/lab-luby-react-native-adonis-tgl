@@ -9,14 +9,13 @@ export const AppHome = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [userBets, setUserBets] = useState<any>();
 
-  const { userEmail } = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
     async function getBets() {
       setIsLoading(true);
       try {
         const { data } = await api.get("/bets");
-        console.log(data);
 
         setIsLoading(false);
       } catch (error) {
@@ -25,7 +24,7 @@ export const AppHome = () => {
       }
     }
     getBets();
-    console.log(userEmail);
+    console.log(user);
   }, []);
 
   return (

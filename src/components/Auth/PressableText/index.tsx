@@ -6,7 +6,7 @@ import { ViewContainer, Text } from "./styles";
 interface ButtonProps extends TouchableOpacityProps {
   text: string;
   color: string;
-  icon: {
+  icon?: {
     color: string;
     size: number;
     name: "arrow-left" | "arrow-right";
@@ -20,10 +20,12 @@ export const PressableText = ({
 
   ...rest
 }: ButtonProps) => {
-  if (icon.name === "arrow-left") {
+  if (icon && icon.name === "arrow-left") {
     return (
       <ViewContainer>
-        <Feather name={icon.name} size={icon.size} color={icon.color} />
+        {icon && (
+          <Feather name={icon.name} size={icon.size} color={icon.color} />
+        )}
         <TouchableOpacity activeOpacity={0.6} {...rest}>
           <Text color={color} IsIconLeft={true}>
             {text}
@@ -40,7 +42,7 @@ export const PressableText = ({
           {text}
         </Text>
       </TouchableOpacity>
-      <Feather name={icon.name} size={icon.size} color={icon.color} />
+      {icon && <Feather name={icon.name} size={icon.size} color={icon.color} />}
     </ViewContainer>
   );
 };

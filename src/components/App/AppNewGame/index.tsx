@@ -11,7 +11,6 @@ export const AppNewGame = () => {
     const getGames = async () => {
       try {
         const { data } = await api.get(`/game`);
-        console.log(data);
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);

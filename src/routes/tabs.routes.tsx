@@ -42,6 +42,7 @@ export const AppTabs = () => (
       options={{
         tabBarIcon: ({ size, focused }) => (
           <View style={styles.container}>
+            {focused && <View style={styles.after}></View>}
             <SimpleLineIcons
               name="home"
               size={size}
@@ -76,6 +77,7 @@ export const AppTabs = () => (
       options={{
         tabBarIcon: ({ size, focused }) => (
           <View style={styles.container}>
+            {focused && <View style={styles.after}></View>}
             <Ionicons
               name="person-outline"
               size={size}
@@ -95,6 +97,15 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     justifyContent: "center",
+  },
+
+  after: {
+    //Just PseudoElement,
+    marginBottom: 4,
+    width: 40,
+    borderBottomWidth: 4,
+    borderRadius: 15,
+    borderColor: colors.yellow_green,
   },
 
   text: {

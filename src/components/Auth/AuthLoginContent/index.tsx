@@ -6,6 +6,7 @@ import {
   Keyboard,
   ScrollView,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useNavigation } from "@react-navigation/native";
@@ -31,7 +32,6 @@ import {
   isMinChars,
   isEmptyEmail,
 } from "../../../utils/validateEmptyFields";
-import { LoadingLottery } from "../../Loading";
 
 interface AuthScreensProps {
   title: string;
@@ -180,12 +180,15 @@ export const AuthLoginContent = ({
 
           await signIn(user);
           setIsLoading(false);
-          if (!signIn(user)) throw new Error(`Dados nao conferem.`);
+          if (!signIn(user)) throw new Error();
         }
       }
     } catch (error) {
       setIsLoading(false);
-      alert(error.message);
+      Alert.alert(
+        "Erro",
+        "Dados estao incorretos. Verificique os dados digitados!"
+      );
     }
   };
 

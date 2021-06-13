@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Auth from "../services/sessionSingIn";
+import { userData as AsyncUserData } from "../@types";
 import { api } from "../services/api";
 
 interface UserData {
@@ -8,17 +9,8 @@ interface UserData {
   password: string;
 }
 
-interface TokenData {
-  token: string;
-}
-
-interface ResponseApiDataSession {
-  user: object;
-  token: object;
-}
-
 interface AuthContextData {
-  userEmail: string | null;
+  user: AsyncUserData | null;
   signed: boolean;
   loading: boolean;
   signIn: ({ email, password }: UserData) => Promise<void>;
@@ -33,21 +25,19 @@ interface AuthProviderProps {
 const AuthContext = createContext({} as AuthContextData);
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [user, setUser] = useState<AsyncUserData | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadAsyncStorageData = async () => {
       const token = await AsyncStorage.getItem("@tgl-labluby-devthiago");
-      const userEmail = await AsyncStorage.getItem(
-        "@tgl-labluby-devthiago-user"
-      );
+      const user = await AsyncStorage.getItem("@tgl-labluby-devthiago-user");
 
       //Tempo de loading da informacao
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      if (token && userEmail) {
-        setUserEmail(JSON.parse(userEmail));
+      if (token && user) {
+        setUser(JSON.parse(user));
         setLoading(false);
       }
       setLoading(false);
@@ -88,7 +78,16 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       JSON.stringify(user)
     );
 
-    setUserEmail(user.email);
+    const { username, created_at, updated_at } = user;
+
+    const userDataResponse: AsyncUserData = {
+      username,
+      email: user.email,
+      created_at,
+      updated_at,
+    };
+
+    setUser(userDataResponse);
 
     // setLoading(true);
     // try {
@@ -103,7 +102,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     //   await AsyncStorage.setItem("@tgl-labluby-devthiago", token);
     //   await AsyncStorage.setItem("@tgl-labluby-devthiago-user", user);
 
-    //   setUserEmail(user.email);
+    //   setUser(user.email);
     //   setFindToken(token);
     //   setSigned(true);
     //   setLoading(false);
@@ -119,7 +118,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     await AsyncStorage.removeItem("@tgl-labluby-devthiago");
     await AsyncStorage.removeItem("@tgl-labluby-devthiago-user");
 
-    setUserEmail(null);
+    setUser(null);
   };
 
   const updateUser = async (userData: any) => {
@@ -140,9 +139,9 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   return (
     <AuthContext.Provider
       value={{
-        userEmail,
+        user,
         loading,
-        signed: !!userEmail,
+        signed: !!user,
         signIn,
         signOut,
         updateUser,
