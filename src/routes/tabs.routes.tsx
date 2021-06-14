@@ -2,11 +2,11 @@ import React from "react";
 import { Platform, View, Text, StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { SimpleLineIcons, Ionicons } from "@expo/vector-icons";
-import { AppHome } from "../components/App/AppHome";
 import { AppNewGame } from "../components/App/AppNewGame";
+import { RecentGames } from "../screens/RecentGames";
+import { AppAccount } from "../components/App/AppAcount";
 import { colors } from "../styles/colors";
 
-import { AppAccount } from "../components/App/AppAcount";
 import { BetsIcon } from "../assets/SVG/BetsIcon";
 
 const AppCreateScreens = createBottomTabNavigator();
@@ -38,7 +38,7 @@ export const AppTabs = () => (
   >
     <AppCreateScreens.Screen
       name="Home"
-      component={AppHome}
+      component={RecentGames}
       options={{
         tabBarIcon: ({ size, focused }) => (
           <View style={styles.container}>

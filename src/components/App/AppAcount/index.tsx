@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import {
   Text,
   ActivityIndicator,
@@ -16,7 +16,6 @@ import {
   ViewWrapperData,
   TextData,
 } from "./styles";
-import { useAuth } from "../../../hook/authContext";
 import { InputWrapper } from "../../Auth/InputWrapper";
 import { InputPassWrapper } from "../../Auth/InputPassWrapper";
 import { PressableText } from "../../Auth/PressableText";
@@ -31,8 +30,10 @@ import {
   isMinChars,
 } from "../../../utils/validateEmptyFields";
 import { api } from "../../../services/api";
+import { userData } from "../../../@types";
 
 export const AppAccount = () => {
+  const [userData, setUserData] = useState<userData>();
   const [isLoading, setIsLoading] = useState(false);
   const [isFilled, setIsFilled] = useState<booleanSingUpFields>({
     name: false,
@@ -64,30 +65,30 @@ export const AppAccount = () => {
     password: "",
   });
 
-  const { user } = useAuth();
   const { navigate } = useNavigation();
 
   //Problema, se o usuario atualizar os dados, eu estou trazendo os dados atualizados do
   //context - la ele nao vai atualizar auto. Aq eu vou ter q atualizar tbm
   // no asyncStorage ou trazer os dados do back end em uma request.
 
-  // useEffect(() => {
-  //   async function getUserData() {
-  //     setIsLoading(true);
-  //     try {
-  //       await api.get("/users/1").then((response) => {
-  //         const { data } = response;
+  useEffect(() => {
+    async function getUserData() {
+      setIsLoading(true);
+      try {
+        await api.get("/users/1").then((response) => {
+          const { data } = response;
 
-  //         setUserData(data);
-  //       });
-  //       setIsLoading(false);
-  //     } catch (error) {
-  //       Alert.alert(error.message)
-  //     }
-  //   }
-  //   setIsLoading(false);
-  //   getUserData();
-  // }, []);
+          setUserData(data);
+        });
+        setIsLoading(false);
+      } catch (error) {
+        setIsLoading(false);
+        Alert.alert(error.message);
+      }
+    }
+
+    getUserData();
+  }, []);
 
   const handleNameInput = (value: string) => {
     setIsFilled((prevState) => ({ ...prevState, name: !!value }));
@@ -259,8 +260,8 @@ export const AppAccount = () => {
     //     }
   }, []);
 
-  if (user) {
-    const { email, username, created_at, updated_at } = user;
+  if (userData) {
+    const { email, username, created_at, updated_at } = userData;
     return (
       <KeyboardAvoidingView style={styles.container}>
         <TouchableWithoutFeedback

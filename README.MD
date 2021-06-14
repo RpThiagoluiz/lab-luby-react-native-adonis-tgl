@@ -10,13 +10,14 @@ UX -> Teclado ao digitar a senha
 
 # Validator das rotas
 
-Fetch || pegar o user do async, atualizar na chamada, e trazer ele mudando o async. Prefiro o fetch, atualizar
+Fetch || pegar o user do async, atualizar na chamada, e trazer ele mudando o async. Prefiro o fetch,
+atualizar os dados do usario.
+
+fazer o filtro das apostas
+formatar a data retornada do backend
 
 Fetch trazendo as informacoes do game, e monstando meu components
 icon do cart, e o nav lateral. brawser, algo
-
-Fetch dos jogos realizados do usuario
-fazer o filtro das apostas
 
 _forgotPass_
 _ResetPass_
@@ -27,5 +28,7 @@ _Login_
 _Verificar se as tipagens estao corretas_
 _Refactor dos inputs. da pra melhorar_
 _Bug quando loga o app fecha. Procurar a solucao._
+_Urgente -> Verificar se o token no asyncStorage esta sendo recuperado e enviado pelas rotas_
+_Fetch dos jogos realizados do usuario_
 
 # Voltar pro App

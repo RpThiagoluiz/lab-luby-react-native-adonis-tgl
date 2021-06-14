@@ -38,6 +38,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
       if (token && user) {
         setUser(JSON.parse(user));
+        api.defaults.headers["Authorization"] = `Bearer ${token}`;
         setLoading(false);
       }
       setLoading(false);
@@ -45,21 +46,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
     loadAsyncStorageData();
   }, []);
-
-  // useEffect(() => {
-  //   const loadDataWhenTokenExist = async () => {
-  //     const token = await AsyncStorage.getItem("@tgl-labluby-devthiago");
-
-  //     if (token) {
-  //       setFindToken({ token });
-  //       api.defaults.headers.Authorization = `Bearer ${token}`;
-  //     }
-
-  //     setLoading(false);
-  //   };
-
-  //   loadDataWhenTokenExist();
-  // }, []);
 
   const signIn = async ({ email, password }: UserData) => {
     const { data } = await Auth.singIn({ email, password });
@@ -71,7 +57,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       user,
     } = data;
 
-    api.defaults.headers.Authorization = `Bearer ${token}`;
     await AsyncStorage.setItem("@tgl-labluby-devthiago", token);
     await AsyncStorage.setItem(
       "@tgl-labluby-devthiago-user",
@@ -87,31 +72,8 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       updated_at,
     };
 
+    api.defaults.headers["Authorization"] = `Bearer ${token}`;
     setUser(userDataResponse);
-
-    // setLoading(true);
-    // try {
-    //   const response = await api.post("/sessions", {
-    //     email,
-    //     password,
-    //   });
-
-    //   const { token } = response.data.token;
-    //   const user = response.data.user;
-
-    //   await AsyncStorage.setItem("@tgl-labluby-devthiago", token);
-    //   await AsyncStorage.setItem("@tgl-labluby-devthiago-user", user);
-
-    //   setUser(user.email);
-    //   setFindToken(token);
-    //   setSigned(true);
-    //   setLoading(false);
-
-    //   api.defaults.headers.Authorization = `Bearer ${token}`;
-    // } catch (error) {
-    //   console.log(error.response);
-    //   setLoading(false);
-    // }
   };
 
   const signOut = async () => {
