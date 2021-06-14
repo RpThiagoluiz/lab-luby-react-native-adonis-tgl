@@ -14,6 +14,7 @@ import { colors } from "../../../styles/colors";
 interface InputPassWrapperProps {
   onBlur?: () => void;
   onFocus?: () => void;
+  value?: string;
   onChangeText?: (value: string) => void;
   validData?: boolean;
   inputError?: boolean;
@@ -24,6 +25,7 @@ export const InputPassWrapper = ({
   onBlur,
   onFocus,
   onChangeText,
+  value,
   validData,
   inputError,
   inputErrorText,
@@ -49,6 +51,7 @@ export const InputPassWrapper = ({
           onBlur={onBlur}
           onFocus={onFocus}
           onChangeText={onChangeText}
+          value={value}
         />
       </InputContent>
       {inputError && <TextError>{inputErrorText}</TextError>}

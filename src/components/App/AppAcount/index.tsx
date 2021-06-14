@@ -8,6 +8,7 @@ import {
   Keyboard,
   ScrollView,
   Alert,
+  View,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import {
@@ -31,6 +32,10 @@ import {
 } from "../../../utils/validateEmptyFields";
 import { api } from "../../../services/api";
 import { userData } from "../../../@types";
+import { ServerOff } from "../ServerOff";
+import { LoadingActivyIndicator } from "../LoadingActivyIndicator";
+import { AppContainer } from "../AppContainer";
+import { SubTitles } from "../SubTitle";
 
 export const AppAccount = () => {
   const [userData, setUserData] = useState<userData>();
@@ -65,11 +70,10 @@ export const AppAccount = () => {
     password: "",
   });
 
-  const { navigate } = useNavigation();
+  const [loadUserInfo, setLoadUserInfo] = useState(false);
+  const [serverOff, setServerOff] = useState(false);
 
-  //Problema, se o usuario atualizar os dados, eu estou trazendo os dados atualizados do
-  //context - la ele nao vai atualizar auto. Aq eu vou ter q atualizar tbm
-  // no asyncStorage ou trazer os dados do back end em uma request.
+  const { navigate } = useNavigation();
 
   useEffect(() => {
     async function getUserData() {
@@ -83,12 +87,11 @@ export const AppAccount = () => {
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
-        Alert.alert(error.message);
+        setServerOff(true);
       }
     }
-
     getUserData();
-  }, []);
+  }, [loadUserInfo]);
 
   const handleNameInput = (value: string) => {
     setIsFilled((prevState) => ({ ...prevState, name: !!value }));
@@ -209,125 +212,150 @@ export const AppAccount = () => {
   };
 
   const handleUpdate = useCallback(async () => {
-    //back verificar o id do usuario auth.
+    const checkData = (data: stringSingUpFields) => {
+      if (data.name === "" && userData) {
+        setEnteredUserData((prevState) => ({
+          ...prevState,
+          name: userData.username,
+        }));
+      } else if (data.email === "" && userData) {
+        setEnteredUserData((prevState) => ({
+          ...prevState,
+          email: userData.email,
+        }));
+      }
+    };
 
-    console.log(enteredUserData);
+    const sendData = async (user: stringSingUpFields) => {
+      const response = await api.put("/users/1", {
+        username: user.name,
+        email: user.email,
+        password: user.password,
+      });
+      return response;
+    };
 
-    //Just discoment
-    // const { name, email, password } = enteredUserData;
+    try {
+      checkData(enteredUserData);
+      const { name, email, password } = enteredUserData;
 
-    //     const sendData = async (user: stringSingUpFields) => {
-    //       const response = await api.put("/users/1", {
-    //         username: user.name,
-    //         email: user.email,
-    //         password: user.password,
-    //       });
-    //       return response;
-    //     };
+      if (name && email && password) {
+        const enteredName = isEmptyName(name);
+        const enteredEmail = isEmptyEmail(email) && isValidRegex(email);
+        const enteredPassword = isMinChars(password);
 
-    //     try {
-    //       if (name && email && password) {
-    //         const enteredName = isEmptyName(name);
-    //         const enteredEmail = isEmptyEmail(email) && isValidRegex(email);
-    //         const enteredPassword = isMinChars(password);
+        const formIsValid = enteredName && enteredEmail && enteredPassword;
 
-    //         const formIsValid = enteredName && enteredEmail && enteredPassword;
+        if (formIsValid) {
+          setIsLoading(true);
+          const userData = {
+            name,
+            email,
+            password,
+          };
 
-    //         if (formIsValid) {
-    //           setIsLoading(true);
-    //           const userData = {
-    //             name,
-    //             email,
-    //             password,
-    //           };
+          await sendData(userData);
 
-    //           await sendData(userData);
+          if (!sendData(userData)) {
+            throw new Error(`Error ao Cadastrar o usuario!`);
+          }
 
-    //           if (!sendData(userData)) {
-    //             throw new Error(`Error ao Cadastrar o usuario!`);
-    //           }
+          Alert.alert(
+            `Ola, ${userData.name} 👋`,
+            `Seu Dados Foram atualizados com sucesso 😊`
+          );
+          setEnteredUserData({
+            name: "",
+            email: "",
+            password: "",
+          });
+          setLoadUserInfo(true);
+          setIsLoading(false);
+          navigate("Home");
+        }
+      } else {
+        return;
+      }
+    } catch (error) {
+      setIsLoading(false);
+      Alert.alert(`Error`, error.message);
+    }
+  }, [enteredUserData]);
 
-    //           Alert.alert(
-    //             `Ola, ${userData.name} 👋`,
-    //             `Seu Dados Foram atualizados com sucesso 😊`
-    //           );
-    //           //navigate("Home");
-    //         }
-    //       } else return;
-    //     } catch (error) {
-    //       setIsLoading(false);
-    //       Alert.alert(`Error`, error.message);
-    //     }
-  }, []);
-
-  if (userData) {
-    const { email, username, created_at, updated_at } = userData;
-    return (
-      <KeyboardAvoidingView style={styles.container}>
-        <TouchableWithoutFeedback
-          style={styles.container}
-          onPress={Keyboard.dismiss}
-        >
-          <ViewContainer>
-            <AppHeader />
-            <ScrollView>
-              <ViewWrapper>
-                <InputContainer>
-                  <InputWrapper
-                    text={`User name`}
-                    placeholder={username}
-                    onBlur={() => handleBlurInput("name")}
-                    onFocus={() => handleFocusInput("name")}
-                    validData={isFocused.name || isFilled.name}
-                    onChangeText={handleNameInput}
-                    inputError={haveError.name}
-                    inputErrorText={errorText.name}
-                  />
-                  <InputWrapper
-                    text={`Email`}
-                    placeholder={email}
-                    onBlur={() => handleBlurInput("email")}
-                    onFocus={() => handleFocusInput("email")}
-                    validData={isFocused.email || isFilled.email}
-                    onChangeText={handleEmailInput}
-                    inputError={haveError.email}
-                    inputErrorText={errorText.email}
-                  />
-                  <InputPassWrapper
-                    onBlur={() => handleBlurInput("password")}
-                    onFocus={() => handleFocusInput("password")}
-                    validData={isFocused.password || isFilled.password}
-                    onChangeText={handlePasswordInput}
-                    inputError={haveError.password}
-                    inputErrorText={errorText.password}
-                  />
-
-                  {isLoading ? (
-                    <ActivityIndicator
-                      color={colors.yellow_green}
-                      style={{ padding: 40 }}
+  return (
+    <KeyboardAvoidingView style={styles.container}>
+      <TouchableWithoutFeedback
+        style={styles.container}
+        onPress={Keyboard.dismiss}
+      >
+        <ViewContainer>
+          <AppHeader />
+          <ScrollView>
+            <ViewWrapper>
+              {userData && (
+                <View>
+                  <InputContainer>
+                    <InputWrapper
+                      text={`User name`}
+                      placeholder={userData?.username}
+                      onBlur={() => handleBlurInput("name")}
+                      onFocus={() => handleFocusInput("name")}
+                      validData={isFocused.name || isFilled.name}
+                      onChangeText={handleNameInput}
+                      inputError={haveError.name}
+                      inputErrorText={errorText.name}
+                      value={enteredUserData.name}
                     />
-                  ) : (
-                    <PressableText
-                      text="Update"
-                      color={colors.yellow_green}
-                      onPress={handleUpdate}
+                    <InputWrapper
+                      text={`Email`}
+                      placeholder={userData?.email}
+                      onBlur={() => handleBlurInput("email")}
+                      onFocus={() => handleFocusInput("email")}
+                      validData={isFocused.email || isFilled.email}
+                      onChangeText={handleEmailInput}
+                      inputError={haveError.email}
+                      inputErrorText={errorText.email}
+                      value={enteredUserData.email}
                     />
-                  )}
-                </InputContainer>
-                <ViewWrapperData>
-                  <TextData>Conta criada: {created_at}</TextData>
-                  <TextData>Ultima atualizacao: {updated_at}</TextData>
-                </ViewWrapperData>
-              </ViewWrapper>
-            </ScrollView>
-          </ViewContainer>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
-    );
-  }
+                    <InputPassWrapper
+                      onBlur={() => handleBlurInput("password")}
+                      onFocus={() => handleFocusInput("password")}
+                      validData={isFocused.password || isFilled.password}
+                      onChangeText={handlePasswordInput}
+                      inputError={haveError.password}
+                      inputErrorText={errorText.password}
+                      value={enteredUserData.password}
+                    />
 
-  return <Text>Loading ...</Text>;
+                    {isLoading ? (
+                      <LoadingActivyIndicator />
+                    ) : (
+                      <PressableText
+                        text="Update"
+                        color={colors.yellow_green}
+                        onPress={handleUpdate}
+                      />
+                    )}
+                  </InputContainer>
+                  <ViewWrapperData>
+                    <TextData>Conta criada: {userData?.created_at}</TextData>
+                    <TextData>
+                      Ultima atualizacao: {userData?.updated_at}
+                    </TextData>
+                  </ViewWrapperData>
+                </View>
+              )}
+              {serverOff && (
+                <AppContainer>
+                  <ServerOff />
+                </AppContainer>
+              )}
+            </ViewWrapper>
+          </ScrollView>
+        </ViewContainer>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
+  );
 };
 const styles = StyleSheet.create({
   container: {

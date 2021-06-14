@@ -8,20 +8,22 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { api } from "../../../services/api";
-
 import { AppHeader } from "../AppHeader";
 import { EmptyCart } from "../Cart/Empty";
 import { BetInUserBets } from "../BetInUserBets";
-import { colors } from "../../../styles/colors";
 import { SubTitles } from "../SubTitle";
 import { AppContainer } from "../AppContainer";
 import { GameButton } from "../GameButton";
+import { ServerOff } from "../ServerOff";
+import { LoadingActivyIndicator } from "../LoadingActivyIndicator";
 
 export const AppHome = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [games, setGames] = useState<any>();
   const [userBets, setUserBets] = useState<any>(); //Remove Any
   const [filteredGames, setFilteredGames] = useState<string[]>([]);
+  const [serverOff, setServerOff] = useState(false);
+  const [loadInfo, setLoadInfo] = useState(false);
 
   useEffect(() => {
     const getGames = async () => {
@@ -40,14 +42,14 @@ export const AppHome = () => {
         setIsLoading(false);
       } catch (error) {
         //Caso o serve estaja off trazer outra tela.
-        alert(error);
+        setServerOff(true);
         setIsLoading(false);
       }
     };
 
     setIsLoading(false);
     getGames();
-  }, []);
+  }, [loadInfo]);
 
   const handlefilteredGames = (name: string) => {
     //if have no filtered game, show all else just filtered
@@ -66,17 +68,13 @@ export const AppHome = () => {
   return (
     <View style={styles.container}>
       <AppHeader />
+
       {isLoading ? (
-        <View style={styles.activityIndicatorContainer}>
-          <ActivityIndicator
-            size="large"
-            color={colors.yellow_green}
-            style={{ padding: 40 }}
-          />
-        </View>
+        <LoadingActivyIndicator />
       ) : (
         <AppContainer>
           <SubTitles title="Recent Games" subtitle="Filters" />
+          {serverOff && <ServerOff />}
 
           <FlatList
             data={games}
@@ -120,10 +118,6 @@ export const AppHome = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  activityIndicatorContainer: {
-    flex: 1,
-    justifyContent: "center",
   },
   gameFlatList: {},
   betsFlatList: {},

@@ -2,18 +2,14 @@ import React from "react";
 import { Platform, View, Text, StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { SimpleLineIcons, Ionicons } from "@expo/vector-icons";
-import { AppNewGame } from "../components/App/AppNewGame";
 import { RecentGames } from "../screens/RecentGames";
-import { AppAccount } from "../components/App/AppAcount";
+import { NewBets } from "../screens/NewBets";
+import { Account } from "../screens/Account";
 import { colors } from "../styles/colors";
 
 import { BetsIcon } from "../assets/SVG/BetsIcon";
 
 const AppCreateScreens = createBottomTabNavigator();
-
-//activeTintColor: colors.gray_900,
-//inactiveTintColor: colors.gray_300,
-//labelPosition: "beside-icon",
 
 export const AppTabs = () => (
   <AppCreateScreens.Navigator
@@ -56,7 +52,7 @@ export const AppTabs = () => (
 
     <AppCreateScreens.Screen
       name="NewGame"
-      component={AppNewGame}
+      component={NewBets}
       options={{
         tabBarIcon: ({ focused }) => (
           <View
@@ -73,7 +69,7 @@ export const AppTabs = () => (
 
     <AppCreateScreens.Screen
       name="Account"
-      component={AppAccount}
+      component={Account}
       options={{
         tabBarIcon: ({ size, focused }) => (
           <View style={styles.container}>

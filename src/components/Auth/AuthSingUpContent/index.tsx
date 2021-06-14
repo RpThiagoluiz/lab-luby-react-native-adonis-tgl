@@ -232,6 +232,11 @@ export const AuthSingUpContent = ({
             `Ola, ${userData.name} 👋`,
             `Seu cadastro foi realizado com sucesso, aproveite o App 😊`
           );
+          setNewUser({
+            name: "",
+            email: "",
+            password: "",
+          });
           navigate("Login");
         }
       } else return;
@@ -239,7 +244,7 @@ export const AuthSingUpContent = ({
       setIsLoading(false);
       Alert.alert(`Error`, error.message);
     }
-  }, []);
+  }, [newUser]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -269,6 +274,7 @@ export const AuthSingUpContent = ({
                   onFocus={() => handleFocusInput("name")}
                   inputError={haveError.name}
                   inputErrorText={errorText.name}
+                  value={newUser.name}
                 />
                 <InputWrapper
                   text="Email"
@@ -278,6 +284,7 @@ export const AuthSingUpContent = ({
                   onFocus={() => handleFocusInput("email")}
                   inputError={haveError.email}
                   inputErrorText={errorText.email}
+                  value={newUser.email}
                 />
                 <InputPassWrapper
                   onChangeText={handlePasswordInput}
@@ -286,6 +293,7 @@ export const AuthSingUpContent = ({
                   onFocus={() => handleFocusInput("password")}
                   inputError={haveError.password}
                   inputErrorText={errorText.password}
+                  value={newUser.password}
                 />
 
                 {isLoading ? (
