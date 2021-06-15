@@ -6,15 +6,14 @@
 
 # Validator das rotas
 
-Refactor na call das fonts, seguindo a doc.
+Montar o component de apostas
+Incrementar a logica de inclusao do game seguindo o layout
 
 fazer o filtro das apostas
 formatar a data retornada do backend
 
 Games, monstar meu components
-icon do cart, e o nav lateral. brawser, algo
-
-**_Urgente -> Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function. _**
+cart: somente se existir algum game dentro do cart ele aparece, o drawer lateral, quando o usuario clicar traz o componente com os games salvos dele
 
 **Email**
 
@@ -39,5 +38,7 @@ _Fix inputmaks, clear input_
 _Fetch pegar o user do async, atualizar na chamada, e trazer ele mudando o async. Prefiro o fetch,atualizar os dados do usario_
 _Backend Desligado retornar uma tela com as informacoes._
 _Fetch trazendo as informacoes do game_
+_Refactor na call das fonts, seguindo a doc._
+_Urgente -> Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function._
 
 # Voltar pro App

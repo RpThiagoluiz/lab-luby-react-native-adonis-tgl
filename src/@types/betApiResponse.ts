@@ -6,16 +6,18 @@ export interface BetApiResponse {
   price: number;
   created_at: Date;
   updated_at: Date;
-  game: {
-    id: number;
-    type: string;
-    description: string;
-    range: number;
-    price: number;
-    ["max-number"]: number;
-    color: string;
-    ["min-cart-value"]: number;
-    created_at: Date;
-    updated_at: Date;
-  };
+  game: GameTypesProps;
+}
+
+export interface GameTypesProps {
+  id: number;
+  type: string;
+  description: string;
+  range: number;
+  price: number;
+  ["max-number"]: number;
+  color: string;
+  ["min-cart-value"]: number;
+  created_at: Date;
+  updated_at: Date;
 }

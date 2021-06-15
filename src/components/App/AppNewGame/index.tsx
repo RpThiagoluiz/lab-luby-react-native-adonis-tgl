@@ -14,6 +14,9 @@ import { GameButton } from "../GameButton";
 import { ServerOff } from "../ServerOff";
 import { colors } from "../../../styles/colors";
 import { LoadingActivyIndicator } from "../LoadingActivyIndicator";
+import { GameModFlatList } from "../GameModFlatList";
+
+//Salvar o game inicial
 
 export const AppNewGame = () => {
   const [games, setGames] = useState<any[]>([]);
@@ -22,20 +25,31 @@ export const AppNewGame = () => {
   const [serverOff, setServerOff] = useState(false);
   const [loadInfo, setLoadInfo] = useState(false);
 
+  const handleGameChoice = (gameType: string) => {
+    console.log(gameType);
+  };
+
   useEffect(() => {
+    let mounted = true;
     const getGames = async () => {
       setIsLoading(true);
       try {
         const { data } = await api.get(`/game`);
-        setIsLoading(false);
-        setGames(data);
+        if (mounted) {
+          setIsLoading(false);
+          setGames(data);
+        }
       } catch (error) {
         setIsLoading(false);
         setServerOff(true);
       }
     };
     getGames();
+    return () => {
+      mounted = false;
+    };
   }, [loadInfo]);
+
   return (
     <View style={styles.container}>
       <AppHeader />
@@ -49,7 +63,12 @@ export const AppNewGame = () => {
             subtitle="Choose a game"
           />
           {serverOff && <ServerOff />}
-          <FlatList
+
+          <GameModFlatList
+            games={games}
+            handleOnPressEvent={handleGameChoice}
+          />
+          {/* <FlatList
             data={games}
             keyExtractor={(item) => String(item.id)}
             horizontal
@@ -57,12 +76,12 @@ export const AppNewGame = () => {
             renderItem={({ item }) => (
               <GameButton
                 isActive={false}
-                onPress={() => console.log(item.type)}
+                onPress={() => console.log(item)}
                 color={item.color}
                 gameName={item.type}
               />
             )}
-          />
+          /> */}
         </AppContainer>
       )}
     </View>

@@ -13,7 +13,7 @@ interface betProps {
   numbers: string;
   color: string;
   date: Date;
-  price: string;
+  price: number;
   gameName: string;
 }
 
