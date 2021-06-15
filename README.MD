@@ -6,6 +6,8 @@
 
 # Validator das rotas
 
+Refactor na call das fonts, seguindo a doc.
+
 fazer o filtro das apostas
 formatar a data retornada do backend
 
