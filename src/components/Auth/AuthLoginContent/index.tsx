@@ -187,7 +187,7 @@ export const AuthLoginContent = ({
       setIsLoading(false);
       Alert.alert(
         "Erro",
-        "Dados estao incorretos. Verificique os dados digitados!"
+        "Dados estao incorretos. Verifique os dados digitados!"
       );
     }
   };

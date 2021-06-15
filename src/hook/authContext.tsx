@@ -33,9 +33,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       const token = await AsyncStorage.getItem("@tgl-labluby-devthiago");
       const user = await AsyncStorage.getItem("@tgl-labluby-devthiago-user");
 
-      //Tempo de loading da informacao
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
       if (token && user) {
         setUser(JSON.parse(user));
         api.defaults.headers["Authorization"] = `Bearer ${token}`;

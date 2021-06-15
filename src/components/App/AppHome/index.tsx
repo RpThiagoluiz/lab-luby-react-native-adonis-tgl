@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  StyleSheet,
-  ActivityIndicator,
-  FlatList,
-  Text,
-  TouchableOpacity,
-} from "react-native";
+import { View, StyleSheet, FlatList } from "react-native";
 import { api } from "../../../services/api";
 import { AppHeader } from "../AppHeader";
 import { EmptyCart } from "../Cart/Empty";
@@ -26,22 +19,24 @@ export const AppHome = () => {
   const [loadInfo, setLoadInfo] = useState(false);
 
   useEffect(() => {
+    //Monitorar
+    let mounted = true;
     const getGames = async () => {
       setIsLoading(true);
 
       try {
-        //Same think
-        await api.get("/game").then((response) => {
-          const { data } = response;
+        const { data: dataGame } = await api.get("/game");
 
-          setGames(data);
-        });
         const { data: dataBets } = await api.get("/bets");
 
-        setUserBets(dataBets);
-        setIsLoading(false);
+        if (mounted) {
+          setGames(dataGame);
+          setUserBets(dataBets);
+          setIsLoading(false);
+        } else {
+          setIsLoading(false);
+        }
       } catch (error) {
-        //Caso o serve estaja off trazer outra tela.
         setServerOff(true);
         setIsLoading(false);
       }
@@ -49,6 +44,9 @@ export const AppHome = () => {
 
     setIsLoading(false);
     getGames();
+    return () => {
+      mounted = false;
+    };
   }, [loadInfo]);
 
   const handlefilteredGames = (name: string) => {
@@ -84,7 +82,7 @@ export const AppHome = () => {
             contentContainerStyle={styles.gameFlatList}
             renderItem={({ item }) => (
               <GameButton
-                isActive={filteredGames.indexOf(item.type) === -1}
+                isActive={filteredGames.indexOf(item.type) !== -1}
                 onPress={() => handlefilteredGames(item.type)}
                 color={item.color}
                 gameName={item.type}
