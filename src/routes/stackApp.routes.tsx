@@ -1,7 +1,8 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { colors } from "../styles/colors";
 import { AppTabs } from "./tabs.routes";
+import { colors } from "../styles/colors";
+import { DrawerScreen } from "./drawer.routes";
 
 const stackRoutes = createStackNavigator();
 

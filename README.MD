@@ -6,7 +6,6 @@
 
 # Validator das rotas
 
-Montar o component de apostas
 Incrementar a logica de inclusao do game seguindo o layout
 
 fazer o filtro das apostas
@@ -14,6 +13,8 @@ formatar a data retornada do backend
 
 Games, monstar meu components
 cart: somente se existir algum game dentro do cart ele aparece, o drawer lateral, quando o usuario clicar traz o componente com os games salvos dele
+
+Scroll somente no component que precisa, ver o layout
 
 **Email**
 
@@ -40,5 +41,6 @@ _Backend Desligado retornar uma tela com as informacoes._
 _Fetch trazendo as informacoes do game_
 _Refactor na call das fonts, seguindo a doc._
 _Urgente -> Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function._
+_Montar o component de apostas_
 
 # Voltar pro App

@@ -36,7 +36,9 @@ export const TextTitle = styled.Text`
   color: ${({ theme }) => theme.colors.gray_700};
 `;
 
-export const ViewWrapper = styled.View``;
+export const ViewWrapper = styled.View`
+  flex-direction: row;
+`;
 
 export const AfterTitle = styled.View`
   border: 4px solid ${({ theme }) => theme.colors.yellow_green};

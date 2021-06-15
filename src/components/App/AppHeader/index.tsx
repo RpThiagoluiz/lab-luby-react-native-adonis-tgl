@@ -3,9 +3,14 @@ import { Feather } from "@expo/vector-icons";
 import { useAuth } from "../../../hook/authContext";
 import { TouchableOpacity, View, StyleSheet } from "react-native";
 import { ViewContainer, TextTitle, ViewContent, ViewWrapper } from "./styles";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { colors } from "../../../styles/colors";
 
-export const AppHeader = () => {
+interface AppHeaderProps {
+  haveCart?: boolean;
+}
+
+export const AppHeader = ({ haveCart }: AppHeaderProps) => {
   const { signOut } = useAuth();
 
   const handleLogout = async () => {
@@ -15,12 +20,27 @@ export const AppHeader = () => {
   return (
     <ViewContainer>
       <ViewContent>
-        <ViewWrapper>
+        <View>
           <TextTitle>TGL</TextTitle>
           <View style={styles.after}></View>
-        </ViewWrapper>
-        <TouchableOpacity activeOpacity={0.8} onPress={handleLogout}>
-          <Feather name="log-out" size={36} color={colors.gray_100} />
+        </View>
+        <TouchableOpacity activeOpacity={0.8}>
+          <ViewWrapper>
+            {haveCart && (
+              <MaterialCommunityIcons
+                name="cart-outline"
+                size={40}
+                color={colors.yellow_green}
+              />
+            )}
+            <Feather
+              onPress={handleLogout}
+              style={{ marginLeft: 20 }}
+              name="log-out"
+              size={36}
+              color={colors.gray_100}
+            />
+          </ViewWrapper>
           <View style={styles.line}></View>
         </TouchableOpacity>
       </ViewContent>
