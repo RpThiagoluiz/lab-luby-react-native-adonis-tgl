@@ -4,6 +4,7 @@ interface ButtonColorProps {
   color: string;
   isActive: boolean;
   size?: string;
+  fontSize?: string;
 }
 
 export const ContainerButton = styled.View<ButtonColorProps>`
@@ -26,5 +27,5 @@ export const ContainerButton = styled.View<ButtonColorProps>`
 export const TextValue = styled.Text<ButtonColorProps>`
   color: ${(props) => props.theme.colors.white};
   text-align: center;
-  font-size: 20px;
+  font-size: ${({ fontSize }) => (fontSize ? fontSize : "20px")};
 `;

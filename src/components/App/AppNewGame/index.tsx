@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { View, StyleSheet, ScrollView, Alert, Text } from "react-native";
+import { View, StyleSheet, ScrollView, Alert, FlatList } from "react-native";
 import {
   TextDescription,
   TextStrongDescription,
@@ -16,7 +16,10 @@ import { LoadingActivyIndicator } from "../LoadingActivyIndicator";
 import { GameModFlatList } from "../GameModFlatList";
 import { GameTypesProps } from "../../../@types";
 import { NewBetButtonFlatList } from "../NewBetButtonFlatList";
+import { NewBetButton } from "../NewBetButton";
 import { BetActionButton } from "../BetActionButton";
+import { inputFormatValue } from "../../../utils";
+import { GameAddCart } from "../../../@types/gameAddCart";
 
 //Salvar o game inicial
 
@@ -78,6 +81,70 @@ export const AppNewGame = () => {
     [selectedNumbers, gameSelected]
   );
 
+  const handlerClearSelectedNumbers = () => {
+    return setSelectedNumbers([]);
+  };
+
+  const handlerCompleteGame = () => {
+    setSelectedNumbers([]);
+    const { range } = gameSelected;
+    let selectArray = [...selectedNumbers];
+
+    try {
+      if (selectedNumbers.length === gameSelected["max-number"]) {
+        throw new Error(`Numeros maximo atingido`);
+      } else {
+        while (selectArray.length < gameSelected["max-number"]) {
+          const randomNumber = String(Math.ceil(Math.random() * range));
+          if (selectArray.indexOf(randomNumber) === -1) {
+            selectArray.push(randomNumber);
+          }
+        }
+        setSelectedNumbers((prevState) => [...prevState, ...selectArray]);
+      }
+    } catch (error) {
+      Alert.alert(
+        `Para o game ${gameSelected.type}`,
+        `A quantidade maxima é ${gameSelected["max-number"]}`
+      );
+    }
+  };
+
+  const handleAddCart = () => {
+    try {
+      //Fetch - abrinco o drawer
+      //checkar se nao existe error e os numeros estao todos preenchidos
+      //para assim conseguir adicionar ao cart
+      const { type, price, color, id } = gameSelected;
+      const numbersChoice = [...selectedNumbers].map((el) => Number(el));
+      const newCartGame: GameAddCart = {
+        game_id: id,
+        id: String(new Date().getTime()),
+        type,
+        gameNumbers: numbersChoice,
+        price,
+        betDate: new Date(),
+        color,
+      };
+      if (numbersChoice.length !== gameSelected["max-number"]) {
+        throw new Error(
+          `Voce nao adicionou a quantidade de numeros do game , ${gameSelected.type} , ${gameSelected["max-number"]}`
+        );
+      }
+
+      console.log(newCartGame);
+    } catch (error) {
+      Alert.alert(error.mensage);
+    }
+  };
+
+  const existsNumber = (value: number): boolean => {
+    const checkNumbers = selectedNumbers.find(
+      (values) => inputFormatValue(Number(values)) === inputFormatValue(value)
+    );
+    return checkNumbers ? true : false;
+  };
+
   useEffect(() => {
     let mounted = true;
     const getGames = async () => {
@@ -126,17 +193,43 @@ export const AppNewGame = () => {
             />
 
             {selectedNumbers.length ? (
-              <ScrollView horizontal={true}>
+              <View>
                 <ViewBetActionContainer>
-                  <BetActionButton text="Complete game" onPress={() => {}} />
-                  <BetActionButton text="Clear game" onPress={() => {}} />
-                  <BetActionButton
-                    isAddCart={true}
-                    text="Add to cart"
-                    onPress={() => {}}
+                  <FlatList
+                    data={selectedNumbers}
+                    keyExtractor={(number) => String(number)}
+                    numColumns={7}
+                    renderItem={({ item }) => (
+                      <NewBetButton
+                        size="40px"
+                        fontSize="15px"
+                        onPress={() => {}}
+                        isActive={existsNumber(Number(item))}
+                        color={gameSelected.color}
+                        stringValue={inputFormatValue(Number(item))}
+                      />
+                    )}
                   />
                 </ViewBetActionContainer>
-              </ScrollView>
+
+                <ScrollView horizontal={true}>
+                  <ViewBetActionContainer>
+                    <BetActionButton
+                      text="Complete game"
+                      onPress={handlerCompleteGame}
+                    />
+                    <BetActionButton
+                      text="Clear game"
+                      onPress={handlerClearSelectedNumbers}
+                    />
+                    <BetActionButton
+                      isAddCart={true}
+                      text="Add to cart"
+                      onPress={handleAddCart}
+                    />
+                  </ViewBetActionContainer>
+                </ScrollView>
+              </View>
             ) : (
               <ViewDescriptionContainer>
                 <TextStrongDescription>Fill your bet</TextStrongDescription>

@@ -1,5 +1,10 @@
 import React from "react";
-import { dateFormatValue, formatValues } from "../../../utils";
+import {
+  dateFormatValue,
+  formatValues,
+  formatNumberInArray,
+  formatNumber,
+} from "../../../utils";
 import {
   ViewContainer,
   ViewWrapper,
@@ -10,7 +15,7 @@ import {
 } from "./styles";
 
 interface betProps {
-  numbers: string;
+  numbers: number[];
   color: string;
   date: Date;
   price: number;

@@ -8,6 +8,7 @@ interface GameButtonProps {
   color: string;
   stringValue: string;
   size?: string;
+  fontSize?: string;
 }
 
 export const NewBetButton = ({
@@ -16,10 +17,11 @@ export const NewBetButton = ({
   color,
   stringValue,
   size,
+  fontSize,
 }: GameButtonProps) => (
   <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
     <ContainerButton isActive={isActive} color={color} size={size}>
-      <TextValue isActive={isActive} color={color}>
+      <TextValue isActive={isActive} color={color} fontSize={fontSize}>
         {stringValue}
       </TextValue>
     </ContainerButton>

@@ -6,8 +6,6 @@
 
 # Validator das rotas
 
-Incrementar a logica de inclusao do game seguindo o layout
-
 fazer o filtro das apostas
 formatar a data retornada do backend
 
@@ -42,5 +40,8 @@ _Fetch trazendo as informacoes do game_
 _Refactor na call das fonts, seguindo a doc._
 _Urgente -> Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function._
 _Montar o component de apostas_
+_Bolinha dos numeros selecionados_
+_Incrementar a logica de inclusao do game seguindo o layout_
+_funcionamento do botoes de apostas_
 
 # Voltar pro App
