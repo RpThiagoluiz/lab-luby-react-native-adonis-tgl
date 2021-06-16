@@ -6,7 +6,6 @@
 
 # Validator das rotas
 
-fazer o filtro das apostas
 formatar a data retornada do backend
 
 Games, monstar meu components
@@ -43,5 +42,6 @@ _Montar o component de apostas_
 _Bolinha dos numeros selecionados_
 _Incrementar a logica de inclusao do game seguindo o layout_
 _funcionamento do botoes de apostas_
+_fazer o filtro das apostas -> continuo apanhando_
 
 # Voltar pro App

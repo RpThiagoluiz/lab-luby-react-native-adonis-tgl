@@ -61,9 +61,7 @@ export const AppHome = () => {
     };
   }, [loadInfo]);
 
-  useEffect(() => {
-    console.log(filteredGames);
-  }, [filteredGames]);
+  useEffect(() => {}, [filteredGames]);
 
   return (
     <View style={styles.container}>
@@ -86,7 +84,7 @@ export const AppHome = () => {
       {userBets && userBets.length === 0 ? (
         <EmptyCart />
       ) : (
-        <BetsFlatList filter={[]} games={userBets} />
+        <BetsFlatList filtered={filteredGames} games={userBets} />
       )}
     </View>
   );

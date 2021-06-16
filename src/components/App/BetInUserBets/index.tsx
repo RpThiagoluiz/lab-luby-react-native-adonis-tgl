@@ -3,7 +3,7 @@ import {
   dateFormatValue,
   formatValues,
   formatNumberInArray,
-  formatNumber,
+  numArray,
 } from "../../../utils";
 import {
   ViewContainer,
@@ -15,7 +15,7 @@ import {
 } from "./styles";
 
 interface betProps {
-  numbers: number[];
+  numbers: string;
   color: string;
   date: Date;
   price: number;
