@@ -3,6 +3,7 @@ import { Platform, View, Text, StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { SimpleLineIcons, Ionicons } from "@expo/vector-icons";
 import { RecentGames } from "../screens/RecentGames";
+import { DrawerScreen } from "./drawer.routes";
 import { NewBets } from "../screens/NewBets";
 import { Account } from "../screens/Account";
 import { colors } from "../styles/colors";
@@ -52,7 +53,7 @@ export const AppTabs = () => (
 
     <AppCreateScreens.Screen
       name="NewGame"
-      component={NewBets}
+      component={DrawerScreen}
       options={{
         tabBarIcon: ({ focused }) => (
           <View

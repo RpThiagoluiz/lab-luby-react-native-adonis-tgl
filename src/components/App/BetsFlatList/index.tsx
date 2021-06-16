@@ -1,27 +1,35 @@
 import React, { useState, useEffect } from "react";
-import { FlatList, Text, ScrollView } from "react-native";
+import { FlatList, GestureResponderEvent, Text } from "react-native";
 import { BetInUserBets } from "../BetInUserBets";
-import { BetApiResponse, GameTypesProps } from "../../../@types";
-import { dateFormatValue } from "../../../utils";
+import { BetApiResponse } from "../../../@types";
 
 interface BetsFlatListProps {
   games: BetApiResponse[];
-  filtered: string[];
+  filtered?: string[];
+  inCart?: boolean;
+  handleOnTrashPress?: (id: string) => void;
 }
 
-export const BetsFlatList = ({ filtered, games }: BetsFlatListProps) => {
+export const BetsFlatList = ({
+  filtered,
+  games,
+  inCart,
+  handleOnTrashPress,
+}: BetsFlatListProps) => {
   const [filterBets, setFilterBets] = useState<BetApiResponse[]>([]);
 
   const handleFilteredBets = () => {
-    if (filtered.length === 0) setFilterBets(games);
-    else {
-      const filteredBet = games.filter((bet) =>
-        filtered.includes(bet.game.type)
-      );
+    if (filtered) {
+      if (filtered.length === 0) setFilterBets(games);
+      else {
+        const filteredBet = games.filter((bet) =>
+          filtered.includes(bet.game.type)
+        );
 
-      console.log(`filter: ${filtered}`);
-
-      setFilterBets(filteredBet);
+        setFilterBets(filteredBet);
+      }
+    } else {
+      setFilterBets(games);
     }
   };
 
@@ -41,11 +49,17 @@ export const BetsFlatList = ({ filtered, games }: BetsFlatListProps) => {
             date={item.updated_at}
             color={item.game.color}
             gameName={item.game.type}
+            onTrashPress={() => {
+              inCart && !!handleOnTrashPress
+                ? handleOnTrashPress(String(item.id))
+                : {};
+            }}
+            inCart={inCart}
           />
         )}
       />
     );
   } else {
-    return <Text> NO GAMES this type</Text>;
+    return <Text> Vc nao possui jogos desse tipo.</Text>;
   }
 };

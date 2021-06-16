@@ -6,12 +6,14 @@
 
 # Validator das rotas
 
-formatar a data retornada do backend
+Estado do Cart in Redux
 
-Games, monstar meu components
+Logica de para conseguir adicionar o item ao carrinho, quando adicionado. Vc enviar os dados para o reducer,
+quando entrar no drawer ele traz os dados do carrinho, caso o usario queira remover ele consegue.
+
 cart: somente se existir algum game dentro do cart ele aparece, o drawer lateral, quando o usuario clicar traz o componente com os games salvos dele
 
-Scroll somente no component que precisa, ver o layout
+!import - no Final verificar android e o Ios estao ok, no designer e funcionalidades.
 
 **Email**
 
@@ -43,5 +45,8 @@ _Bolinha dos numeros selecionados_
 _Incrementar a logica de inclusao do game seguindo o layout_
 _funcionamento do botoes de apostas_
 _fazer o filtro das apostas -> continuo apanhando_
+_formatar a data retornada do backend_
+_Scroll somente no component que precisa, ver o layout_
+_Games, monstar meu components_
 
 # Voltar pro App

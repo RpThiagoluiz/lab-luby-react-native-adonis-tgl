@@ -56,7 +56,6 @@ export const AppNewGame = () => {
   const handleNumberValue = useCallback(
     (value: string) => {
       const newValue = value;
-      console.log(value);
 
       try {
         const indexSelected = selectedNumbers.indexOf(newValue);
@@ -131,8 +130,6 @@ export const AppNewGame = () => {
           `Voce nao adicionou a quantidade de numeros do game , ${gameSelected.type} , ${gameSelected["max-number"]}`
         );
       }
-
-      console.log(newCartGame);
     } catch (error) {
       Alert.alert(error.mensage);
     }
@@ -175,10 +172,10 @@ export const AppNewGame = () => {
     <View style={styles.container}>
       <AppHeader haveCart={selectedNumbers.length > 0} />
 
-      <ScrollView>
-        {isLoading ? (
-          <LoadingActivyIndicator />
-        ) : (
+      {isLoading ? (
+        <LoadingActivyIndicator />
+      ) : (
+        <View>
           <AppContainer>
             <SubTitles
               title={`New Bet for ${gameSelected.type} `}
@@ -236,18 +233,18 @@ export const AppNewGame = () => {
                 <TextDescription>{gameSelected.description}</TextDescription>
               </ViewDescriptionContainer>
             )}
-
-            <ViewContainerNumbers>
-              <NewBetButtonFlatList
-                range={gameSelected.range}
-                handleOnPressEvent={handleNumberValue}
-                color={gameSelected.color}
-                selectedNumbers={selectedNumbers}
-              />
-            </ViewContainerNumbers>
           </AppContainer>
-        )}
-      </ScrollView>
+
+          <ViewContainerNumbers>
+            <NewBetButtonFlatList
+              range={gameSelected.range}
+              handleOnPressEvent={handleNumberValue}
+              color={gameSelected.color}
+              selectedNumbers={selectedNumbers}
+            />
+          </ViewContainerNumbers>
+        </View>
+      )}
     </View>
   );
 };

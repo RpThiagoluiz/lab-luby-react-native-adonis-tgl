@@ -1,15 +1,16 @@
-export const formatNumberInArray = (selectedNumber: number[]) => {
-  const crescs = (cr1: number, cr2: number) => {
+export const formatNumberInArray = (selectedNumber: string) => {
+  const crescs = (cr1: any, cr2: any) => {
     return cr1 - cr2;
   };
+  const formateNumbers = (numbers: string[]) => numbers.join(", ");
 
-  const crescResult = [...selectedNumber];
+  let crescResult = selectedNumber.replace(/['"]+/g, "").split(", ");
+  //crescResult = formateNumbers(crescResult)
 
   const numberResult = crescResult.sort(crescs);
 
-  const formateNumbers = (numbers: number[]) => numbers.join(", ");
-
-  return formateNumbers(numberResult);
+  return;
+  return numberResult;
 };
 
 export const numArray = (numbers: any) =>

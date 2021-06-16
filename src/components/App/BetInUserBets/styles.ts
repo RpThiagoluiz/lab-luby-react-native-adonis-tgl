@@ -19,6 +19,12 @@ export const BorderLeft = styled.View<ColorProps>`
 export const ViewWrapper = styled.View`
   padding: 0 8px;
 `;
+
+export const ViewContentDataPriceDelete = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
 export const TextNumbers = styled.Text`
   color: ${({ theme }) => theme.colors.gray_800};
   font-size: 14px;

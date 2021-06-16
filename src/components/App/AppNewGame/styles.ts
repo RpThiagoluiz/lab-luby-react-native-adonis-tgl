@@ -21,6 +21,7 @@ export const ViewBetActionContainer = styled.View`
 `;
 
 export const ViewContainerNumbers = styled.View`
-  margin-bottom: 30px;
-  position: relative;
+  height: 260px;
+  background: transparent;
+  margin: 3px 15px 30px 15px;
 `;
