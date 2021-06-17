@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FlatList, GestureResponderEvent, Text } from "react-native";
 import { BetInUserBets } from "../BetInUserBets";
 import { BetApiResponse } from "../../../@types";
+import { GameAddCart } from "../../../@types/gameAddCart";
 
 interface BetsFlatListProps {
   games: BetApiResponse[];
@@ -49,12 +50,6 @@ export const BetsFlatList = ({
             date={item.updated_at}
             color={item.game.color}
             gameName={item.game.type}
-            onTrashPress={() => {
-              inCart && !!handleOnTrashPress
-                ? handleOnTrashPress(String(item.id))
-                : {};
-            }}
-            inCart={inCart}
           />
         )}
       />

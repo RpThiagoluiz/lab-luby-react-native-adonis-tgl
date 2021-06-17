@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ScrollView } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
 import { DrawerContentComponentProps } from "@react-navigation/drawer";
 import { Entypo } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -17,20 +18,24 @@ import {
   TextItalic,
   TextPrice,
 } from "./styles";
-import { BetsFlatList } from "../../BetsFlatList";
+import {
+  DeleteCartItem,
+  SaveCartInApi,
+} from "../../../../store/actions/betCartActions";
 import { PressableText } from "../../../Auth/PressableText";
 import { LoadingActivyIndicator } from "../../LoadingActivyIndicator";
 import { EmptyCart } from "../Empty";
 import { colors } from "../../../../styles/colors";
-import { Alert } from "react-native";
-import { api } from "../../../../services/api";
 import { formatValues } from "../../../../utils";
-import { GameAddCart } from "../../../../@types/gameAddCart";
+import { useAppDispatch, useAppSelector } from "../../../../store/typedUse";
+import { BetsFlatCartList } from "../BetsFlatCartList";
 
 export const CartDrawer = (props: DrawerContentComponentProps) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [cartsGames, setCartsGames] = useState<GameAddCart[]>([]);
-  const [totalPrice, setTotalPrice] = useState(0);
+
+  const cartItems = useAppSelector((state) => state.cart.games);
+  const cartTotalPrice = useAppSelector((state) => state.cart.totalPrice);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     setIsLoading(true);
@@ -42,54 +47,16 @@ export const CartDrawer = (props: DrawerContentComponentProps) => {
     clearTimeout();
   }, []);
 
-  useEffect(() => {
-    const total = cartsGames.reduce((sumTotal, games) => {
-      return sumTotal + Number(games.price);
-    }, 0);
-
-    setTotalPrice(total);
-  }, [cartsGames]);
+  useEffect(() => {}, [cartTotalPrice, cartTotalPrice]);
 
   const removeItemToCart = (id: string) => {
-    setCartsGames((prevState) => prevState.filter((game) => game.id !== id));
+    dispatch(DeleteCartItem(id));
   };
 
-  const saveGame = async () => {
-    setIsLoading(true);
-    try {
-      if (totalPrice < 30) {
-        const minPrice = 30; //gameChoice["min-cart-value"]
-        setIsLoading(false);
-        throw new Error(
-          `Valor minimo para salvar o game nao atingido: ${formatValues(
-            minPrice
-          )}`
-        );
-      }
-
-      const cart: any = [];
-
-      cartsGames.forEach((game) => {
-        cart.push({
-          game_id: game.game_id,
-          numbers: game.gameNumbers.toString(),
-          price: Number(game.price),
-        });
-      });
-
-      const response = await api.post("/bets", {
-        cart,
-        totalPrice,
-      });
-
-      if (response.status !== 200) {
-        throw new Error(`Error ao enviar o game, tente novamente mais tarde.`);
-      }
-
-      setCartsGames([]);
-    } catch (error) {
-      Alert.alert(`Error 😐`, error.message);
-    }
+  const saveGame = () => {
+    console.log(cartItems);
+    console.log(formatValues(cartTotalPrice));
+    //dispatch(SaveCartInApi(`save`));
   };
 
   return (
@@ -117,14 +84,12 @@ export const CartDrawer = (props: DrawerContentComponentProps) => {
           <ViewWrapperFlatList>
             {isLoading ? (
               <LoadingActivyIndicator />
+            ) : cartItems.length > 0 ? (
+              <BetsFlatCartList
+                games={cartItems}
+                handleOnTrashPress={removeItemToCart}
+              />
             ) : (
-              //       {/* Trazer os dados do cart, jogar na flat list do game, e salvar o game na Api */}
-              //     {/* <BetsFlatList
-              //   filtered={filteredGames} //nao precisa
-              //   games={userBets}
-              //   inCart={true}
-              //   handleOnTrashPress={removeItemToCart}
-              // /> */}
               <EmptyCart />
             )}
           </ViewWrapperFlatList>
@@ -134,7 +99,7 @@ export const CartDrawer = (props: DrawerContentComponentProps) => {
               <TextStrong>CART </TextStrong>
               <TextItalic>TOTAL: </TextItalic>
             </ViewCartTotalText>
-            <TextPrice>{formatValues(totalPrice)}</TextPrice>
+            <TextPrice>{formatValues(cartTotalPrice)}</TextPrice>
           </ViewCartTotalContainer>
 
           <ViewWrapperSaveButton>

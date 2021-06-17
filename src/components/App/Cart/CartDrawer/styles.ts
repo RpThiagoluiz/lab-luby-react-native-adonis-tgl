@@ -28,6 +28,8 @@ export const TextHeader = styled.Text`
 
 export const ViewWrapperFlatList = styled.View`
   height: 400px;
+
+  margin-right: 10px;
 `;
 
 export const ViewWrapperSaveButton = styled.View`

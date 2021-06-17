@@ -1,7 +1,9 @@
 import React from "react";
 import AppLoading from "expo-app-loading";
+import { Provider } from "react-redux";
 import { useFonts } from "expo-font";
 import { AuthProvider } from "./src/hook/authContext";
+import { store } from "./src/store";
 import { ThemeProvider } from "styled-components";
 import { Routes } from "./src/routes";
 import { colors } from "./src/styles/colors";
@@ -22,7 +24,9 @@ export default function App() {
   return (
     <ThemeProvider theme={{ colors }}>
       <AuthProvider>
-        <Routes />
+        <Provider store={store}>
+          <Routes />
+        </Provider>
       </AuthProvider>
     </ThemeProvider>
   );

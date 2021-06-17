@@ -7,6 +7,7 @@ import {
   ViewContainerNumbers,
   ViewBetActionContainer,
 } from "./styles";
+import { useDispatch } from "react-redux";
 import { AppHeader } from "../AppHeader";
 import { api } from "../../../services/api";
 import { SubTitles } from "../SubTitle";
@@ -20,6 +21,8 @@ import { NewBetButton } from "../NewBetButton";
 import { BetActionButton } from "../BetActionButton";
 import { inputFormatValue } from "../../../utils";
 import { GameAddCart } from "../../../@types/gameAddCart";
+import { addCartItem } from "../../../store/actions/betCartActions";
+import { useAppSelector } from "../../../store/typedUse";
 
 //Salvar o game inicial
 
@@ -42,6 +45,9 @@ export const AppNewGame = () => {
   const [serverOff, setServerOff] = useState(false);
   const [loadInfo, setLoadInfo] = useState(false);
   const [selectedNumbers, setSelectedNumbers] = useState<string[]>([]);
+
+  const cartItems = useAppSelector((state) => state.cart.games);
+  const dispatch = useDispatch();
 
   const handleGameChoice = (gameType: string) => {
     setIsLoading(true);
@@ -109,13 +115,13 @@ export const AppNewGame = () => {
     }
   };
 
-  const handleAddCart = () => {
+  const handleAddCart = async () => {
     try {
-      //Fetch - abrinco o drawer
-      //checkar se nao existe error e os numeros estao todos preenchidos
-      //para assim conseguir adicionar ao cart
       const { type, price, color, id } = gameSelected;
       const numbersChoice = [...selectedNumbers].map((el) => Number(el));
+
+      //const betDate = new Date();
+
       const newCartGame: GameAddCart = {
         game_id: id,
         id: String(new Date().getTime()),
@@ -125,11 +131,16 @@ export const AppNewGame = () => {
         betDate: new Date(),
         color,
       };
+
       if (numbersChoice.length !== gameSelected["max-number"]) {
         throw new Error(
           `Voce nao adicionou a quantidade de numeros do game , ${gameSelected.type} , ${gameSelected["max-number"]}`
         );
       }
+
+      dispatch(addCartItem(newCartGame));
+
+      setSelectedNumbers([]);
     } catch (error) {
       Alert.alert(error.mensage);
     }
@@ -170,7 +181,9 @@ export const AppNewGame = () => {
 
   return (
     <View style={styles.container}>
-      <AppHeader haveCart={selectedNumbers.length > 0} />
+      <AppHeader
+        haveCart={selectedNumbers.length > 0 || cartItems.length > 0}
+      />
 
       {isLoading ? (
         <LoadingActivyIndicator />
