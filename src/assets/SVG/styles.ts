@@ -4,7 +4,7 @@ import { Platform } from "react-native";
 export const ViewContainer = styled.View`
   border: 4px solid ${({ theme }) => theme.colors.white};
   box-shadow: 2px 4px 2px rgba(0, 0, 0, 0.25);
-  border-radius: 60;
+  border-radius: 60px;
 
   ${Platform.select({
     android: {

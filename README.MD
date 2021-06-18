@@ -6,6 +6,11 @@
 
 # Validator das rotas
 
+Mudar a mensagem do carrinho quando ele estiver vazio na rota das bets
+Limpar os campos quando o usario retornar a pagina
+Colocar anicao quando remover as apostas
+o usuario, quando filtra um game, e nao tem daquele tipo tem um container tbm
+
 SaveGame
 Quando clicar no carrinho abrir o drawer
 

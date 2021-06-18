@@ -1,6 +1,6 @@
 import React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { NewBets } from "../screens/NewBets";
+import { NewBets } from "../screens/App/NewBets";
 import { CartDrawer } from "../components/App/Cart/CartDrawer";
 
 const Drawer = createDrawerNavigator();

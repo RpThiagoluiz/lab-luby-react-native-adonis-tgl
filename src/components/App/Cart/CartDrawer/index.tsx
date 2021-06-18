@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { DrawerContentComponentProps } from "@react-navigation/drawer";
 import { Entypo } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { AppContainer } from "../../AppContainer";
+import { AppContainer } from "../../Container";
 import {
   ViewContainer,
   ViewHeaderContent,
@@ -32,6 +32,7 @@ import { useAppDispatch, useAppSelector } from "../../../../store/typedUse";
 import { BetsFlatCartList } from "../BetsFlatCartList";
 import { api } from "../../../../services/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 
 interface GameForApi {
   game_id: number;
@@ -45,6 +46,7 @@ export const CartDrawer = (props: DrawerContentComponentProps) => {
   const cartItems = useAppSelector((state) => state.cart.games);
   const cartTotalPrice = useAppSelector((state) => state.cart.totalPrice);
   const dispatch = useAppDispatch();
+  const { navigate } = useNavigation();
 
   useEffect(() => {
     setIsLoading(true);
@@ -94,6 +96,7 @@ export const CartDrawer = (props: DrawerContentComponentProps) => {
         `Bet Realizada com Sucesso!`,
         `Veja seu historico de apostas, acessando sua conta.`
       );
+      navigate("Home");
     } catch (error) {
       setIsLoading(false);
       Alert.alert(error.message);
@@ -101,62 +104,60 @@ export const CartDrawer = (props: DrawerContentComponentProps) => {
   };
 
   return (
-    <ScrollView>
-      <ViewContainer>
-        <AppContainer>
-          <ViewClosedContainer>
-            <Entypo
-              name="cross"
-              size={48}
-              color={colors.yellow_green}
-              style={{ position: "absolute", top: 2, right: 2 }}
-              onPress={props.navigation.closeDrawer}
-            />
-          </ViewClosedContainer>
-          <ViewHeaderContent>
-            <MaterialCommunityIcons
-              name="cart-outline"
-              size={40}
-              color={colors.yellow_green}
-            />
-            <TextHeader>CART</TextHeader>
-          </ViewHeaderContent>
+    <ViewContainer>
+      <AppContainer>
+        <ViewClosedContainer>
+          <Entypo
+            name="cross"
+            size={48}
+            color={colors.yellow_green}
+            style={{ position: "absolute", top: 2, right: 2 }}
+            onPress={props.navigation.closeDrawer}
+          />
+        </ViewClosedContainer>
+        <ViewHeaderContent>
+          <MaterialCommunityIcons
+            name="cart-outline"
+            size={40}
+            color={colors.yellow_green}
+          />
+          <TextHeader>CART</TextHeader>
+        </ViewHeaderContent>
 
-          <ViewWrapperFlatList>
-            {isLoading ? (
-              <LoadingActivyIndicator />
-            ) : cartItems.length > 0 ? (
-              <BetsFlatCartList
-                games={cartItems}
-                handleOnTrashPress={removeItemToCart}
-              />
-            ) : (
-              <EmptyCart />
-            )}
-          </ViewWrapperFlatList>
-
-          <ViewCartTotalContainer>
-            <ViewCartTotalText>
-              <TextStrong>CART </TextStrong>
-              <TextItalic>TOTAL: </TextItalic>
-            </ViewCartTotalText>
-            <TextPrice>{formatValues(cartTotalPrice)}</TextPrice>
-          </ViewCartTotalContainer>
-
-          <ViewWrapperSaveButton>
-            <PressableText
-              text="Save"
-              color={colors.yellow_green}
-              icon={{
-                color: colors.yellow_green,
-                name: "arrow-right",
-                size: 40,
-              }}
-              onPress={saveGame}
+        <ViewWrapperFlatList>
+          {isLoading ? (
+            <LoadingActivyIndicator />
+          ) : cartItems.length > 0 ? (
+            <BetsFlatCartList
+              games={cartItems}
+              handleOnTrashPress={removeItemToCart}
             />
-          </ViewWrapperSaveButton>
-        </AppContainer>
-      </ViewContainer>
-    </ScrollView>
+          ) : (
+            <EmptyCart text="Seu Carrinho esta vazio 😞" />
+          )}
+        </ViewWrapperFlatList>
+
+        <ViewCartTotalContainer>
+          <ViewCartTotalText>
+            <TextStrong>CART </TextStrong>
+            <TextItalic>TOTAL: </TextItalic>
+          </ViewCartTotalText>
+          <TextPrice>{formatValues(cartTotalPrice)}</TextPrice>
+        </ViewCartTotalContainer>
+
+        <ViewWrapperSaveButton>
+          <PressableText
+            text="Save"
+            color={colors.yellow_green}
+            icon={{
+              color: colors.yellow_green,
+              name: "arrow-right",
+              size: 40,
+            }}
+            onPress={saveGame}
+          />
+        </ViewWrapperSaveButton>
+      </AppContainer>
+    </ViewContainer>
   );
 };

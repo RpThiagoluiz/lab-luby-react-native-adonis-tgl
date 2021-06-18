@@ -8,12 +8,12 @@ export const ViewContiner = styled.View<addCart>`
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
-  width: 140px;
+  width: 120px;
   height: 40px;
 
   background: ${(props) =>
     props.isAddCart ? props.theme.colors.yellow_green : "transparent"};
-  padding: 8px 16px;
+  padding: 8px;
   border-radius: 10px;
 
   margin-right: 8px;
@@ -22,6 +22,7 @@ export const ViewContiner = styled.View<addCart>`
 `;
 
 export const Text = styled.Text<addCart>`
+  font-size: 12px;
   color: ${(props) =>
     props.isAddCart
       ? props.theme.colors.white

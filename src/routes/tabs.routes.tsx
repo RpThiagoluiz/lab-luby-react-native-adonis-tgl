@@ -1,11 +1,16 @@
 import React from "react";
-import { Platform, View, Text, StyleSheet } from "react-native";
+import {
+  Platform,
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { SimpleLineIcons, Ionicons } from "@expo/vector-icons";
-import { RecentGames } from "../screens/RecentGames";
+import { AppHome } from "../screens/App/Home";
 import { DrawerScreen } from "./drawer.routes";
-import { NewBets } from "../screens/NewBets";
-import { Account } from "../screens/Account";
+import { Account } from "../screens/App/Account";
 import { colors } from "../styles/colors";
 
 import { BetsIcon } from "../assets/SVG/BetsIcon";
@@ -35,7 +40,7 @@ export const AppTabs = () => (
   >
     <AppCreateScreens.Screen
       name="Home"
-      component={RecentGames}
+      component={AppHome}
       options={{
         tabBarIcon: ({ size, focused }) => (
           <View style={styles.container}>

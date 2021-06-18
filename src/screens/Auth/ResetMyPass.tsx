@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/core";
-import { PressableText } from "../components/Auth/PressableText";
-import { AuthResetMyPassword } from "../components/Auth/AuthResetMyPassword";
-import { colors } from "../styles/colors";
+import { PressableText } from "../../components/Auth/PressableText";
+import { AuthResetMyPassword } from "../../components/Auth/AuthResetMyPassword";
+import { colors } from "../../styles/colors";
 
 export const ResetPass = () => {
   const { goBack } = useNavigation();

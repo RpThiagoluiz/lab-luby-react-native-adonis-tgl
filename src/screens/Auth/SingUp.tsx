@@ -1,9 +1,9 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/core";
-import { PressableText } from "../components/Auth/PressableText";
-import { AuthSingUpContent } from "../components/Auth/AuthSingUpContent";
-import { colors } from "../styles/colors";
+import { PressableText } from "../../components/Auth/PressableText";
+import { AuthSingUpContent } from "../../components/Auth/AuthSingUpContent";
+import { colors } from "../../styles/colors";
 
 export const SingUp = () => {
   const { goBack } = useNavigation();
@@ -13,7 +13,7 @@ export const SingUp = () => {
   };
 
   return (
-    <AuthSingUpContent title="Registration" navigation="Login">
+    <AuthSingUpContent title="Registration">
       <PressableText
         text="Back"
         color={colors.gray_700}

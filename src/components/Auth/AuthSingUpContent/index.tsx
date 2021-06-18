@@ -242,7 +242,10 @@ export const AuthSingUpContent = ({
       } else return;
     } catch (error) {
       setIsLoading(false);
-      Alert.alert(`Error`, error.message);
+      Alert.alert(
+        `Error`,
+        `Email ou nome ja cadastrados. Caso tenha perdido sua senha acessa -forgot my password - para recuperar seu dados.`
+      );
     }
   }, [newUser]);
 

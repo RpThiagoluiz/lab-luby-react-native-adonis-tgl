@@ -11,8 +11,8 @@ export const DeleteCartItem = (id: string) => {
   return cartActions.removeItemToCart(id);
 };
 
-export const SaveCartInApi = (t: any) => {
-  return cartActions.saveInApi(t);
+export const SaveCartInApi = () => {
+  return cartActions.saveInApi();
 };
 
 export const ClearCart = () => {

@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/core";
-import { PressableText } from "../components/Auth/PressableText";
-import { AuthLoginContent } from "../components/Auth/AuthLoginContent";
-import { colors } from "../styles/colors";
+import { PressableText } from "../../components/Auth/PressableText";
+import { AuthLoginContent } from "../../components/Auth/AuthLoginContent";
+import { colors } from "../../styles/colors";
 
 export const AuthLoginScreen = () => {
   const { navigate } = useNavigation();
@@ -12,7 +12,7 @@ export const AuthLoginScreen = () => {
   };
 
   return (
-    <AuthLoginContent title="Autentication" navigation="">
+    <AuthLoginContent title="Autentication">
       <PressableText
         text="Sing Up"
         color={colors.gray_700}

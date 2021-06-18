@@ -1,10 +1,10 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { colors } from "../styles/colors";
-import { ForgotPass } from "../screens/ForgotMyPass";
-import { ResetPass } from "../screens/ResetMyPass";
-import { SingUp } from "../screens/SingUp";
-import { AuthLoginScreen } from "../screens/AuthLogin";
+import { ForgotPass } from "../screens/Auth/ForgotMyPass";
+import { ResetPass } from "../screens/Auth/ResetMyPass";
+import { SingUp } from "../screens/Auth/SingUp";
+import { AuthLoginScreen } from "../screens/Auth/AuthLogin";
 
 const stackRoutes = createStackNavigator();
 

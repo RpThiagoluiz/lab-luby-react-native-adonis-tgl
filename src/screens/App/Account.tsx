@@ -1,7 +1,5 @@
 import React, { useCallback, useState, useEffect } from "react";
 import {
-  Text,
-  ActivityIndicator,
   StyleSheet,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
@@ -16,28 +14,30 @@ import {
   ViewWrapper,
   ViewWrapperData,
   TextData,
-} from "./styles";
-import { InputWrapper } from "../../Auth/InputWrapper";
-import { InputPassWrapper } from "../../Auth/InputPassWrapper";
-import { PressableText } from "../../Auth/PressableText";
-import { InputContainer } from "../../Auth/InputContainer";
-import { AppHeader } from "../AppHeader";
-import { colors } from "../../../styles/colors";
-import { booleanSingUpFields, stringSingUpFields } from "../../../@types";
+} from "./styles/AccountStyles";
+import { InputWrapper } from "../../components/Auth/InputWrapper";
+import { InputPassWrapper } from "../../components/Auth/InputPassWrapper";
+import { PressableText } from "../../components/Auth/PressableText";
+import { InputContainer } from "../../components/Auth/InputContainer";
+import { AppHeader } from "../../components/App/Header";
+import { colors } from "../../styles/colors";
+import {
+  booleanSingUpFields,
+  stringSingUpFields,
+  userData,
+} from "../../@types";
 import {
   isEmptyEmail,
   isEmptyName,
   isValidRegex,
   isMinChars,
-} from "../../../utils/validateEmptyFields";
-import { api } from "../../../services/api";
-import { userData } from "../../../@types";
-import { ServerOff } from "../ServerOff";
-import { LoadingActivyIndicator } from "../LoadingActivyIndicator";
-import { AppContainer } from "../AppContainer";
-import { SubTitles } from "../SubTitle";
+} from "../../utils/validateEmptyFields";
+import { api } from "../../services/api";
+import { ServerOff } from "../../components/App/ServerOff";
+import { LoadingActivyIndicator } from "../../components/App/LoadingActivyIndicator";
+import { AppContainer } from "../../components/App/Container";
 
-export const AppAccount = () => {
+export const Account = () => {
   const [userData, setUserData] = useState<userData>();
   const [isLoading, setIsLoading] = useState(false);
   const [isFilled, setIsFilled] = useState<booleanSingUpFields>({

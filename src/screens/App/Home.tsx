@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
-import { api } from "../../../services/api";
-import { AppHeader } from "../AppHeader";
-import { EmptyCart } from "../Cart/Empty";
-import { SubTitles } from "../SubTitle";
-import { AppContainer } from "../AppContainer";
-import { ServerOff } from "../ServerOff";
-import { LoadingActivyIndicator } from "../LoadingActivyIndicator";
-import { BetsFlatList } from "../BetsFlatList";
-import { BetApiResponse } from "../../../@types";
-import { GameModFlatList } from "../GameModFlatList";
+import { api } from "../../services/api";
+import { AppHeader } from "../../components/App/Header";
+import { EmptyCart } from "../../components/App/Cart/Empty";
+import { SubTitles } from "../../components/App/SubTitle";
+import { AppContainer } from "../../components/App/Container";
+import { ServerOff } from "../../components/App/ServerOff";
+import { LoadingActivyIndicator } from "../../components/App/LoadingActivyIndicator";
+import { BetsFlatList } from "../../components/App/BetsFlatList";
+import { BetApiResponse } from "../../@types";
+import { GameModFlatList } from "../../components/App/GameModFlatList";
+import { useAppSelector } from "../../store/typedUse";
 
 export const AppHome = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -17,6 +18,8 @@ export const AppHome = () => {
   const [userBets, setUserBets] = useState<BetApiResponse[]>([]); //Remove Any
   const [filteredGames, setFilteredGames] = useState<string[]>([]);
   const [serverOff, setServerOff] = useState(false);
+
+  const cartItems = useAppSelector((state) => state.cart.games);
 
   const handlefilteredGames = (name: string) => {
     const find = filteredGames.find((el) => el === name);
@@ -46,7 +49,7 @@ export const AppHome = () => {
 
   useEffect(() => {
     getGames();
-  }, []);
+  }, [cartItems]);
 
   return (
     <View style={styles.container}>
@@ -67,7 +70,7 @@ export const AppHome = () => {
         </AppContainer>
       )}
       {userBets && userBets.length === 0 ? (
-        <EmptyCart />
+        <EmptyCart text="Vamos realizar seu primeiro Jogo! Corra e nao perca a chance de mudar de vida 🎉🎉" />
       ) : (
         <BetsFlatList filtered={filteredGames} games={userBets} />
       )}
@@ -79,6 +82,4 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  gameFlatList: {},
-  betsFlatList: {},
 });

@@ -1,22 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { FlatList, GestureResponderEvent, Text } from "react-native";
+import { FlatList, Text } from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { ViewNoGameThisType, TextNoGame } from "./styles";
 import { BetInUserBets } from "../BetInUserBets";
 import { BetApiResponse } from "../../../@types";
-import { GameAddCart } from "../../../@types/gameAddCart";
+import { colors } from "../../../styles/colors";
 
 interface BetsFlatListProps {
   games: BetApiResponse[];
   filtered?: string[];
-  inCart?: boolean;
-  handleOnTrashPress?: (id: string) => void;
 }
 
-export const BetsFlatList = ({
-  filtered,
-  games,
-  inCart,
-  handleOnTrashPress,
-}: BetsFlatListProps) => {
+export const BetsFlatList = ({ filtered, games }: BetsFlatListProps) => {
   const [filterBets, setFilterBets] = useState<BetApiResponse[]>([]);
 
   const handleFilteredBets = () => {
@@ -55,6 +50,15 @@ export const BetsFlatList = ({
       />
     );
   } else {
-    return <Text> Vc nao possui jogos desse tipo.</Text>;
+    return (
+      <ViewNoGameThisType>
+        <MaterialCommunityIcons
+          name="slot-machine-outline"
+          size={40}
+          color={colors.red}
+        />
+        <TextNoGame> Vc nao possui jogos desse tipo.</TextNoGame>
+      </ViewNoGameThisType>
+    );
   }
 };

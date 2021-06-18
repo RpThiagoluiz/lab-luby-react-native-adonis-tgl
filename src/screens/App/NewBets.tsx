@@ -6,27 +6,26 @@ import {
   ViewDescriptionContainer,
   ViewContainerNumbers,
   ViewBetActionContainer,
-} from "./styles";
+} from "./styles/NewBetsStyles";
 import { useDispatch } from "react-redux";
-import { AppHeader } from "../AppHeader";
-import { api } from "../../../services/api";
-import { SubTitles } from "../SubTitle";
-import { AppContainer } from "../AppContainer";
-import { ServerOff } from "../ServerOff";
-import { LoadingActivyIndicator } from "../LoadingActivyIndicator";
-import { GameModFlatList } from "../GameModFlatList";
-import { GameTypesProps } from "../../../@types";
-import { NewBetButtonFlatList } from "../NewBetButtonFlatList";
-import { NewBetButton } from "../NewBetButton";
-import { BetActionButton } from "../BetActionButton";
-import { inputFormatValue } from "../../../utils";
-import { GameAddCart } from "../../../@types/gameAddCart";
-import { addCartItem } from "../../../store/actions/betCartActions";
-import { useAppSelector } from "../../../store/typedUse";
+import { AppHeader } from "../../components/App/Header";
+import { api } from "../../services/api";
+import { SubTitles } from "../../components/App/SubTitle";
+import { AppContainer } from "../../components/App/Container";
+import { ServerOff } from "../../components/App/ServerOff";
+import { LoadingActivyIndicator } from "../../components/App/LoadingActivyIndicator";
+import { GameModFlatList } from "../../components/App/GameModFlatList";
+import { GameTypesProps, GameAddCart } from "../../@types";
+import { NewBetButtonFlatList } from "../../components/App/NewBetButtonFlatList";
+import { NewBetButton } from "../../components/App/NewBetButton";
+import { BetActionButton } from "../../components/App/BetActionButton";
+import { inputFormatValue } from "../../utils";
+import { addCartItem } from "../../store/actions/betCartActions";
+import { useAppSelector } from "../../store/typedUse";
 
 //Salvar o game inicial
 
-export const AppNewGame = () => {
+export const NewBets = () => {
   const [games, setGames] = useState<GameTypesProps[]>([]);
   const [gameSelected, setGameSelected] = useState<GameTypesProps>({
     id: 0,
@@ -43,7 +42,6 @@ export const AppNewGame = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [serverOff, setServerOff] = useState(false);
-  const [loadInfo, setLoadInfo] = useState(false);
   const [selectedNumbers, setSelectedNumbers] = useState<string[]>([]);
 
   const cartItems = useAppSelector((state) => state.cart.games);
@@ -182,7 +180,7 @@ export const AppNewGame = () => {
     return () => {
       mounted = false;
     };
-  }, [loadInfo]);
+  }, []);
 
   return (
     <View style={styles.container}>
