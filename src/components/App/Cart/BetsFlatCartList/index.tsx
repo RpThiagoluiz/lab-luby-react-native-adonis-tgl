@@ -23,9 +23,7 @@ export const BetsFlatCartList = ({
           date={item.betDate}
           color={item.color}
           gameName={item.type}
-          onTrashPress={() => {
-            handleOnTrashPress(String(item.id));
-          }}
+          onTrashPress={() => handleOnTrashPress(item.id)}
         />
       )}
     />

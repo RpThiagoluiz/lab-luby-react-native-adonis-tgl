@@ -4,9 +4,10 @@ import { cartSlice } from "./cartSlice";
 export const store = configureStore({
   reducer: { cart: cartSlice.reducer },
   middleware: getDefaultMiddleware({
-    serializableCheck: {
-      ignoredActions: ["cart/addItemToCart", "cart/removeItemFromCart"],
-    },
+    serializableCheck: false,
+    // serializableCheck: {
+    //   //ignoredActions: ["cart/addItemToCart", "cart/removeItemToCart"],
+    // },
   }),
 });
 

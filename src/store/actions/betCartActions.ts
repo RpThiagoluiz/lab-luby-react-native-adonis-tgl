@@ -7,19 +7,14 @@ export const addCartItem = (cartItem: GameAddCart) => {
   return cartActions.addItemToCart(cartItem);
 };
 
-export const DeleteCartItem = (index: string) => {
-  return cartActions.removeItemToCart(index);
+export const DeleteCartItem = (id: string) => {
+  return cartActions.removeItemToCart(id);
 };
 
-export const SaveCartInApi = (
-  // cartsGames: GameAddCart[],
-  // totalPrice: number
-  text: string
-) => {
-  // const games = {
-  //   cartsGames,
-  //   totalPrice,
-  // };
+export const SaveCartInApi = (t: any) => {
+  return cartActions.saveInApi(t);
+};
 
-  return cartActions.saveInApi(text);
+export const ClearCart = () => {
+  return cartActions.clearCart();
 };

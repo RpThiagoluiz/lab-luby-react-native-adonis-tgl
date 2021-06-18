@@ -1,10 +1,16 @@
 import React from "react";
 import { Feather } from "@expo/vector-icons";
 import { useAuth } from "../../../hook/authContext";
-import { TouchableOpacity, View, StyleSheet } from "react-native";
+import {
+  TouchableOpacity,
+  View,
+  StyleSheet,
+  GestureResponderEvent,
+} from "react-native";
 import { ViewContainer, TextTitle, ViewContent, ViewWrapper } from "./styles";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { colors } from "../../../styles/colors";
+import { useNavigation } from "@react-navigation/native";
 
 interface AppHeaderProps {
   haveCart?: boolean;
@@ -15,6 +21,10 @@ export const AppHeader = ({ haveCart }: AppHeaderProps) => {
 
   const handleLogout = async () => {
     await signOut();
+  };
+
+  const handleNavigationCartDrawer = () => {
+    console.log(`drawer cart`);
   };
 
   return (
@@ -31,6 +41,7 @@ export const AppHeader = ({ haveCart }: AppHeaderProps) => {
                 name="cart-outline"
                 size={40}
                 color={colors.yellow_green}
+                onPress={handleNavigationCartDrawer}
               />
             )}
             <Feather

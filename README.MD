@@ -6,13 +6,10 @@
 
 # Validator das rotas
 
-Estado do Cart in Redux
+SaveGame
+Quando clicar no carrinho abrir o drawer
 
-Logica de para conseguir adicionar o item ao carrinho, quando adicionado. Vc enviar os dados para o reducer,
-quando entrar no drawer ele traz os dados do carrinho, caso o usario queira remover ele consegue.
-
-cart: somente se existir algum game dentro do cart ele aparece, o drawer lateral, quando o usuario clicar traz o componente com os games salvos dele
-
+!import - verificar as screens, o codigo, se ha error. a logica.
 !import - no Final verificar android e o Ios estao ok, no designer e funcionalidades.
 
 **Email**
@@ -48,5 +45,9 @@ _fazer o filtro das apostas -> continuo apanhando_
 _formatar a data retornada do backend_
 _Scroll somente no component que precisa, ver o layout_
 _Games, monstar meu components_
+_Estado do Cart in Redux_
+_Logica de para conseguir adicionar o item ao carrinho, quando adicionado. Vc enviar os dados para o reducer, quando entrar no drawer ele traz os dados do carrinho, caso o usario queira remover ele consegue._
+_cart: somente se existir algum game dentro do cart ele aparece, o drawer lateral, quando o usuario clicar traz o componente com os games salvos dele_
+_Quando clicar no X fechar o drawer_
 
 # Voltar pro App

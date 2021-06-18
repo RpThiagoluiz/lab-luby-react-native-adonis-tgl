@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, FlatList } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { api } from "../../../services/api";
 import { AppHeader } from "../AppHeader";
 import { EmptyCart } from "../Cart/Empty";
 import { SubTitles } from "../SubTitle";
 import { AppContainer } from "../AppContainer";
-import { GameButton } from "../GameButton";
 import { ServerOff } from "../ServerOff";
 import { LoadingActivyIndicator } from "../LoadingActivyIndicator";
 import { BetsFlatList } from "../BetsFlatList";
@@ -18,7 +17,6 @@ export const AppHome = () => {
   const [userBets, setUserBets] = useState<BetApiResponse[]>([]); //Remove Any
   const [filteredGames, setFilteredGames] = useState<string[]>([]);
   const [serverOff, setServerOff] = useState(false);
-  const [loadInfo, setLoadInfo] = useState(false);
 
   const handlefilteredGames = (name: string) => {
     const find = filteredGames.find((el) => el === name);
@@ -31,37 +29,24 @@ export const AppHome = () => {
     }
   };
 
-  useEffect(() => {
-    //Monitorar
-    let mounted = true;
-    const getGames = async () => {
+  const getGames = async () => {
+    try {
       setIsLoading(true);
+      const { data: dataGame } = await api.get("/game");
+      const { data: dataBets } = await api.get("/bets");
 
-      try {
-        const { data: dataGame } = await api.get("/game");
-        const { data: dataBets } = await api.get("/bets");
+      setGames(dataGame);
+      setUserBets(dataBets);
+      setIsLoading(false);
+    } catch (error) {
+      setServerOff(true);
+      setIsLoading(false);
+    }
+  };
 
-        if (mounted) {
-          setGames(dataGame);
-          setUserBets(dataBets);
-          setIsLoading(false);
-        } else {
-          setIsLoading(false);
-        }
-      } catch (error) {
-        setServerOff(true);
-        setIsLoading(false);
-      }
-    };
-    //fectchBets();
+  useEffect(() => {
     getGames();
-    setIsLoading(false);
-    return () => {
-      mounted = false;
-    };
-  }, [loadInfo]);
-
-  useEffect(() => {}, [filteredGames]);
+  }, []);
 
   return (
     <View style={styles.container}>

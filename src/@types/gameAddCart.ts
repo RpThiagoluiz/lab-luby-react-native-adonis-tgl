@@ -1,5 +1,5 @@
 export interface GameAddCart {
-  game_id?: number;
+  game_id: number;
   id: string;
   type: string;
   price: number;

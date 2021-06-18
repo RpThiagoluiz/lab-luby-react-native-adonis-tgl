@@ -10,7 +10,7 @@ export const ContainerButton = styled.View<ButtonColorProps>`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  width: 140px;
+  width: 120px;
   height: 40px;
 
   background: transparent;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ScrollView } from "react-native";
+import { Alert, ScrollView } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { DrawerContentComponentProps } from "@react-navigation/drawer";
 import { Entypo } from "@expo/vector-icons";
@@ -19,6 +19,7 @@ import {
   TextPrice,
 } from "./styles";
 import {
+  ClearCart,
   DeleteCartItem,
   SaveCartInApi,
 } from "../../../../store/actions/betCartActions";
@@ -29,6 +30,14 @@ import { colors } from "../../../../styles/colors";
 import { formatValues } from "../../../../utils";
 import { useAppDispatch, useAppSelector } from "../../../../store/typedUse";
 import { BetsFlatCartList } from "../BetsFlatCartList";
+import { api } from "../../../../services/api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+interface GameForApi {
+  game_id: number;
+  numbers: string;
+  price: number;
+}
 
 export const CartDrawer = (props: DrawerContentComponentProps) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -47,16 +56,48 @@ export const CartDrawer = (props: DrawerContentComponentProps) => {
     clearTimeout();
   }, []);
 
-  useEffect(() => {}, [cartTotalPrice, cartTotalPrice]);
+  useEffect(() => {}, [cartTotalPrice, cartTotalPrice, dispatch]);
 
   const removeItemToCart = (id: string) => {
     dispatch(DeleteCartItem(id));
   };
 
-  const saveGame = () => {
-    console.log(cartItems);
-    console.log(formatValues(cartTotalPrice));
-    //dispatch(SaveCartInApi(`save`));
+  const saveGame = async () => {
+    setIsLoading(true);
+    try {
+      if (cartTotalPrice < 30) {
+        setIsLoading(false);
+        throw new Error(
+          `Valor minimo para salvar o game nao atingido: ${formatValues(30)}`
+        );
+      }
+
+      const betCartToSend: GameForApi[] = [];
+
+      cartItems.forEach((game) => {
+        betCartToSend.push({
+          game_id: game.game_id,
+          numbers: game.gameNumbers.toString(),
+          price: Number(game.price),
+        });
+      });
+
+      const items = {
+        cart: betCartToSend,
+        totalPrice: cartTotalPrice,
+      };
+
+      await api.post("/bets", items);
+      setIsLoading(false);
+      dispatch(ClearCart());
+      Alert.alert(
+        `Bet Realizada com Sucesso!`,
+        `Veja seu historico de apostas, acessando sua conta.`
+      );
+    } catch (error) {
+      setIsLoading(false);
+      Alert.alert(error.message);
+    }
   };
 
   return (
@@ -69,7 +110,7 @@ export const CartDrawer = (props: DrawerContentComponentProps) => {
               size={48}
               color={colors.yellow_green}
               style={{ position: "absolute", top: 2, right: 2 }}
-              onPress={() => console.log(`ai`)}
+              onPress={props.navigation.closeDrawer}
             />
           </ViewClosedContainer>
           <ViewHeaderContent>

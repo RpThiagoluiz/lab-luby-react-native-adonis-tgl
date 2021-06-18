@@ -45,6 +45,7 @@ export const ViewWrapperSaveButton = styled.View`
 export const ViewCartTotalContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
+  margin-top: 15px;
 `;
 
 export const ViewCartTotalText = styled.View`

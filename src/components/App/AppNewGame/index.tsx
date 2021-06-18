@@ -27,7 +27,7 @@ import { useAppSelector } from "../../../store/typedUse";
 //Salvar o game inicial
 
 export const AppNewGame = () => {
-  const [games, setGames] = useState<any[]>([]);
+  const [games, setGames] = useState<GameTypesProps[]>([]);
   const [gameSelected, setGameSelected] = useState<GameTypesProps>({
     id: 0,
     type: "",
@@ -61,18 +61,14 @@ export const AppNewGame = () => {
 
   const handleNumberValue = useCallback(
     (value: string) => {
-      const newValue = value;
-
       try {
-        const indexSelected = selectedNumbers.indexOf(newValue);
+        const indexSelected = selectedNumbers.indexOf(value);
         const numExists = indexSelected === -1;
 
         if (numExists && selectedNumbers.length < gameSelected["max-number"]) {
-          return setSelectedNumbers((prevState) => [...prevState, newValue]);
+          return setSelectedNumbers((prevState) => [...prevState, value]);
         } else if (!numExists) {
-          const filterNumbers = selectedNumbers.filter(
-            (num) => num !== newValue
-          );
+          const filterNumbers = selectedNumbers.filter((num) => num !== value);
           return setSelectedNumbers(filterNumbers);
         } else {
           throw new Error(
@@ -90,21 +86,29 @@ export const AppNewGame = () => {
     return setSelectedNumbers([]);
   };
 
-  const handlerCompleteGame = () => {
+  const handlerCompleteGame = useCallback(() => {
     setSelectedNumbers([]);
     const { range } = gameSelected;
-    let selectArray = [...selectedNumbers];
+    let selectArray: string[] = [];
+    const numbersForCompleted =
+      gameSelected["max-number"] - selectedNumbers.length;
 
     try {
-      if (selectedNumbers.length === gameSelected["max-number"]) {
+      if (selectedNumbers.length >= gameSelected["max-number"]) {
         throw new Error(`Numeros maximo atingido`);
       } else {
-        while (selectArray.length < gameSelected["max-number"]) {
-          const randomNumber = String(Math.ceil(Math.random() * range));
-          if (selectArray.indexOf(randomNumber) === -1) {
+        while (selectArray.length < numbersForCompleted) {
+          const randomNumber = inputFormatValue(
+            Math.ceil(Math.random() * range)
+          );
+          if (
+            selectArray.indexOf(randomNumber) === -1 &&
+            selectedNumbers.indexOf(randomNumber) === -1
+          ) {
             selectArray.push(randomNumber);
           }
         }
+
         setSelectedNumbers((prevState) => [...prevState, ...selectArray]);
       }
     } catch (error) {
@@ -113,14 +117,18 @@ export const AppNewGame = () => {
         `A quantidade maxima é ${gameSelected["max-number"]}`
       );
     }
-  };
+  }, [gameSelected, gameSelected]);
 
-  const handleAddCart = async () => {
+  const handleAddCart = () => {
     try {
       const { type, price, color, id } = gameSelected;
       const numbersChoice = [...selectedNumbers].map((el) => Number(el));
 
-      //const betDate = new Date();
+      if (numbersChoice.length !== gameSelected["max-number"]) {
+        throw new Error(
+          `Voce nao adicionou a quantidade de numeros do game , ${gameSelected.type} , ${gameSelected["max-number"]}`
+        );
+      }
 
       const newCartGame: GameAddCart = {
         game_id: id,
@@ -132,17 +140,14 @@ export const AppNewGame = () => {
         color,
       };
 
-      if (numbersChoice.length !== gameSelected["max-number"]) {
-        throw new Error(
-          `Voce nao adicionou a quantidade de numeros do game , ${gameSelected.type} , ${gameSelected["max-number"]}`
-        );
-      }
-
       dispatch(addCartItem(newCartGame));
 
       setSelectedNumbers([]);
     } catch (error) {
-      Alert.alert(error.mensage);
+      Alert.alert(
+        `Error 😑`,
+        `Voce nao adicionou a quantidade de numeros do game , ${gameSelected.type} , ${gameSelected["max-number"]}`
+      );
     }
   };
 

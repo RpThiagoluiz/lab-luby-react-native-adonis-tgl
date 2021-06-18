@@ -278,7 +278,10 @@ export const AppAccount = () => {
       }
     } catch (error) {
       setIsLoading(false);
-      Alert.alert(`Error`, error.message);
+      Alert.alert(
+        `Error`,
+        `Usuario ou email invalidos, talvez alguem ja esteja utilizando esses dados. 😞`
+      );
     }
   }, [enteredUserData]);
 
