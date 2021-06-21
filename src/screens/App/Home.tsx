@@ -12,7 +12,11 @@ import { BetsFlatList } from "../../components/App/BetsFlatList";
 import { BetApiResponse } from "../../@types";
 import { GameModFlatList } from "../../components/App/GameModFlatList";
 import { useAppSelector } from "../../store/typedUse";
-import { formatValues } from "../../utils";
+import {
+  formatValues,
+  formatBetsString,
+  formatNumberInArray,
+} from "../../utils";
 import { betProps } from "../../@types";
 
 export const AppHome = () => {
@@ -35,34 +39,35 @@ export const AppHome = () => {
     }
   };
 
-  const getGames = async () => {
-    try {
-      setIsLoading(true);
-      const { data: dataGame } = await api.get("/game");
-      const { data: dataBets } = await api.get("/bets");
-
-      const formatedBets: betProps[] = dataBets.map((bet: BetApiResponse) => {
-        return {
-          id: bet.id,
-          numbers: bet.numbers,
-          color: bet.game.color,
-          date: moment(bet.updated_at).format("DD/MM/YYYY"),
-          price: formatValues(bet.price),
-          gameName: bet.game.type,
-        };
-      });
-
-      setGames(dataGame);
-      setUserBets(formatedBets);
-      setIsLoading(false);
-    } catch (error) {
-      setServerOff(true);
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
     let mounted = true;
+    const getGames = async () => {
+      try {
+        setIsLoading(true);
+        const { data: dataGame } = await api.get("/game");
+        const { data: dataBets } = await api.get("/bets");
+
+        const formatedBets: betProps[] = dataBets.map((bet: BetApiResponse) => {
+          return {
+            id: bet.id,
+            numbers: formatNumberInArray(formatBetsString(bet.numbers)),
+            color: bet.game.color,
+            date: moment(bet.updated_at).format("DD/MM/YYYY"),
+            price: formatValues(bet.price),
+            gameName: bet.game.type,
+          };
+        });
+
+        if (mounted) {
+          setGames(dataGame);
+          setUserBets(formatedBets);
+          setIsLoading(false);
+        }
+      } catch (error) {
+        setServerOff(true);
+        setIsLoading(false);
+      }
+    };
     getGames();
     return () => {
       mounted = false;
@@ -75,10 +80,11 @@ export const AppHome = () => {
 
       {isLoading ? (
         <LoadingActivyIndicator />
+      ) : serverOff ? (
+        <ServerOff />
       ) : (
         <AppContainer>
           <SubTitles title="Recent Games" subtitle="Filters" />
-          {serverOff && <ServerOff />}
 
           <GameModFlatList
             games={games}

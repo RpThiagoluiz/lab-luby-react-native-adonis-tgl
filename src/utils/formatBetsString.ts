@@ -1,4 +1,4 @@
-const formatBetsString = (a: string) => {
+export const formatBetsString = (a: string) => {
   const b = a.split(",").map(function (item) {
     return parseInt(item, 10);
   });
