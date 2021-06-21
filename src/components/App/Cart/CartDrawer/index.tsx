@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Alert, ScrollView } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { DrawerContentComponentProps } from "@react-navigation/drawer";
@@ -60,9 +60,10 @@ export const CartDrawer = (props: DrawerContentComponentProps) => {
 
   useEffect(() => {}, [cartTotalPrice, cartTotalPrice, dispatch]);
 
-  const removeItemToCart = (id: string) => {
+  const removeItemToCart = useCallback((id: string) => {
+    //useCallBack Here. try
     dispatch(DeleteCartItem(id));
-  };
+  }, []);
 
   const saveGame = async () => {
     setIsLoading(true);

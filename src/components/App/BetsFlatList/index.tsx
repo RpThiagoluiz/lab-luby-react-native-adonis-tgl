@@ -3,23 +3,23 @@ import { FlatList, Text } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ViewNoGameThisType, TextNoGame } from "./styles";
 import { BetInUserBets } from "../BetInUserBets";
-import { BetApiResponse } from "../../../@types";
+import { betProps } from "../../../@types";
 import { colors } from "../../../styles/colors";
 
 interface BetsFlatListProps {
-  games: BetApiResponse[];
+  games: betProps[];
   filtered?: string[];
 }
 
 export const BetsFlatList = ({ filtered, games }: BetsFlatListProps) => {
-  const [filterBets, setFilterBets] = useState<BetApiResponse[]>([]);
+  const [filterBets, setFilterBets] = useState<betProps[]>([]);
 
   const handleFilteredBets = () => {
     if (filtered) {
       if (filtered.length === 0) setFilterBets(games);
       else {
         const filteredBet = games.filter((bet) =>
-          filtered.includes(bet.game.type)
+          filtered.includes(bet.gameName)
         );
 
         setFilterBets(filteredBet);
@@ -42,9 +42,9 @@ export const BetsFlatList = ({ filtered, games }: BetsFlatListProps) => {
           <BetInUserBets
             numbers={item.numbers}
             price={item.price}
-            date={item.updated_at}
-            color={item.game.color}
-            gameName={item.game.type}
+            date={item.date}
+            color={item.color}
+            gameName={item.gameName}
           />
         )}
       />
@@ -57,7 +57,7 @@ export const BetsFlatList = ({ filtered, games }: BetsFlatListProps) => {
           size={40}
           color={colors.red}
         />
-        <TextNoGame> Vc nao possui jogos desse tipo.</TextNoGame>
+        <TextNoGame> Vc não possui jogos desse tipo.</TextNoGame>
       </ViewNoGameThisType>
     );
   }

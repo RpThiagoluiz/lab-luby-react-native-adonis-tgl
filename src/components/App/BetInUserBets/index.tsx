@@ -32,7 +32,8 @@ export const BetInUserBets = ({
       <TextNumbers>{numbers}</TextNumbers>
       <ViewContentDataPriceDelete>
         <TextDescription>
-          {moment(date).format("DD/MM/YYYY")} - ({formatValues(price)})
+          {date} - {price}
+          {/* {moment(date).format("DD/MM/YYYY")} - ({formatValues(price)}) */}
         </TextDescription>
       </ViewContentDataPriceDelete>
       <TextGameName color={color}>{gameName}</TextGameName>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import { api } from "../../services/api";
+import moment from "moment";
 import { AppHeader } from "../../components/App/Header";
 import { EmptyCart } from "../../components/App/Cart/Empty";
 import { SubTitles } from "../../components/App/SubTitle";
@@ -11,11 +12,13 @@ import { BetsFlatList } from "../../components/App/BetsFlatList";
 import { BetApiResponse } from "../../@types";
 import { GameModFlatList } from "../../components/App/GameModFlatList";
 import { useAppSelector } from "../../store/typedUse";
+import { formatValues } from "../../utils";
+import { betProps } from "../../@types";
 
 export const AppHome = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [games, setGames] = useState<any>();
-  const [userBets, setUserBets] = useState<BetApiResponse[]>([]); //Remove Any
+  const [userBets, setUserBets] = useState<betProps[]>([]); //Remove Any
   const [filteredGames, setFilteredGames] = useState<string[]>([]);
   const [serverOff, setServerOff] = useState(false);
 
@@ -38,8 +41,19 @@ export const AppHome = () => {
       const { data: dataGame } = await api.get("/game");
       const { data: dataBets } = await api.get("/bets");
 
+      const formatedBets: betProps[] = dataBets.map((bet: BetApiResponse) => {
+        return {
+          id: bet.id,
+          numbers: bet.numbers,
+          color: bet.game.color,
+          date: moment(bet.updated_at).format("DD/MM/YYYY"),
+          price: formatValues(bet.price),
+          gameName: bet.game.type,
+        };
+      });
+
       setGames(dataGame);
-      setUserBets(dataBets);
+      setUserBets(formatedBets);
       setIsLoading(false);
     } catch (error) {
       setServerOff(true);
@@ -48,7 +62,11 @@ export const AppHome = () => {
   };
 
   useEffect(() => {
+    let mounted = true;
     getGames();
+    return () => {
+      mounted = false;
+    };
   }, [cartItems]);
 
   return (
