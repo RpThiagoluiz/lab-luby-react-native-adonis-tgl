@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FlatList, Text } from "react-native";
+import { FlatList } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ViewNoGameThisType, TextNoGame } from "./styles";
 import { BetInUserBets } from "../BetInUserBets";

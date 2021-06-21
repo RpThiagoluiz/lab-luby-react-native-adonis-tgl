@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Auth from "../services/sessionSingIn";
-import { userData as AsyncUserData } from "../@types";
+import { UpdateUser, userData as AsyncUserData } from "../@types";
 import { api } from "../services/api";
 
 interface UserData {
@@ -47,8 +47,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const signIn = async ({ email, password }: UserData) => {
     const { data } = await Auth.singIn({ email, password });
 
-    //verificar se teve sucesso
-
     const {
       token: { token },
       user,
@@ -80,7 +78,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     setUser(null);
   };
 
-  const updateUser = async (userData: any) => {
+  const updateUser = async (userData: UpdateUser) => {
     setLoading(true);
     try {
       await api.put("/users ", {

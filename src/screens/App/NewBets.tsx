@@ -190,6 +190,8 @@ export const NewBets = () => {
 
       {isLoading ? (
         <LoadingActivyIndicator />
+      ) : serverOff ? (
+        <ServerOff />
       ) : (
         <View>
           <AppContainer>
@@ -197,7 +199,6 @@ export const NewBets = () => {
               title={`New Bet for ${gameSelected.type} `}
               subtitle="Choose a game"
             />
-            {serverOff && <ServerOff />}
 
             <GameModFlatList
               games={games}
